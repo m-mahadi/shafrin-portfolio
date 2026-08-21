@@ -33,10 +33,12 @@ const bengaliTitle = d.titleBn && isBengali(d.titleBn);
 <Base title={`${d.number}: ${d.title}`} description={d.summary}>
   <div class="wrap">
     <nav class="breadcrumb" aria-label="Breadcrumb">
-      <svg width="26" height="10" viewBox="0 0 26 10" aria-hidden="true" focusable="false">
-        <path d="M26 5H2M6.5 0.5L1.5 5L6.5 9.5" fill="none" stroke="var(--color-pink)" stroke-width="1.2"></path>
-      </svg>
-      <a href="/portfolio">Portfolio</a>
+      <a href="/portfolio" style="display:inline-flex;align-items:center;gap:12px;">
+        <svg width="26" height="10" viewBox="0 0 26 10" aria-hidden="true" focusable="false">
+          <path d="M26 5H2M6.5 0.5L1.5 5L6.5 9.5" fill="none" stroke="var(--color-pink)" stroke-width="1.2"></path>
+        </svg>
+        Portfolio
+      </a>
       <span class="crumb-chapter" aria-hidden="true">/</span>
       <span class="crumb-chapter">{chapter.name}</span>
     </nav>

@@ -1,8 +1,9 @@
 ---
 // Artboard 08. Mobile derives from the rules established in 02.
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Frame from '../components/Frame.astro';
-import Placeholder from '../components/Placeholder.astro';
+import portraitOrange from '../assets/images/portrait-orange.jpg';
 
 const objectives = [
   'Demonstrate the knowledge and skills I have acquired.',
@@ -46,7 +47,12 @@ const subjects = [
     </div>
 
     <Frame class="about-hero__portrait" offset={16}>
-      <Placeholder label="Portrait placeholder" note="Photograph to be supplied." markSize={30} />
+      <Image
+        src={portraitOrange}
+        alt="Shafrin Akter Chowdhury seated at a wooden table against an orange wall, wearing a pale green saree."
+        widths={[400, 800]}
+        sizes="(max-width: 767px) 100vw, 400px"
+      />
     </Frame>
   </section>
 

@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "@fontsource/ibm-plex-mono": "^5.2.5",
-    "@fontsource/instrument-serif": "^5.2.5",
     "@fontsource/newsreader": "^5.2.5",
     "@fontsource/noto-serif-bengali": "^5.2.5",
     "astro": "^5.12.0",

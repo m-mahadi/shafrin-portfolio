@@ -4,8 +4,8 @@
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Frame from '../components/Frame.astro';
-import Placeholder from '../components/Placeholder.astro';
 import ArrowLink from '../components/ArrowLink.astro';
+import portraitPlants from '../assets/images/portrait-plants.jpg';
 import { allProjects, href, isBengali } from '../lib/projects';
 import { image } from '../lib/images';
 
@@ -60,9 +60,11 @@ const columns = [rest.slice(0, 6), rest.slice(6)];
     </div>
 
     <Frame class="hero__portrait" side="left">
-      <Placeholder
-        label="Portrait placeholder"
-        note="Photograph to be supplied. No usable portrait exists in the source report."
+      <Image
+        src={portraitPlants}
+        alt="Shafrin Akter Chowdhury standing among potted trees on a rooftop terrace at night, wearing a blue block-printed kurta."
+        widths={[400, 800]}
+        sizes="(max-width: 767px) 100vw, 452px"
       />
     </Frame>
   </section>

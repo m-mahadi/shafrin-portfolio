@@ -36,16 +36,24 @@ import { site } from '../lib/site';
           </dd>
         </div>
         <div>
+          <dt>Phone</dt>
+          <dd><a href={`tel:${site.phone}`}>{site.phoneLabel}</a></dd>
+        </div>
+        <div>
           <dt>Blog</dt>
           <dd><a href={site.blog} rel="noopener">{site.blogLabel} ↗</a></dd>
         </div>
         <div>
-          <dt>Based in</dt>
-          <dd class="plain">{site.location}</dd>
+          <dt>Social</dt>
+          <dd><a href={site.linkedin} rel="noopener">LinkedIn ↗</a></dd>
         </div>
         <div>
-          <dt>Social</dt>
-          <dd class="pending">Handles to be supplied</dd>
+          <dt>Résumé</dt>
+          <dd><a href={site.resume}>Download PDF ↗</a></dd>
+        </div>
+        <div>
+          <dt>Based in</dt>
+          <dd class="plain">{site.location}</dd>
         </div>
       </dl>
     </div>
