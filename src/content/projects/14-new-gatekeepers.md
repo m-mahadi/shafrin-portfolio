@@ -1,0 +1,20 @@
+---
+slug: 'new-gatekeepers'
+number: '14'
+title: 'New Gatekeepers'
+subtitle: 'New Gatekeepers: How Audiences are Reshaping Journalism in Bangladesh'
+course: 'Digital Audience'
+courseCode: 'MSJ 2252'
+semester: 'Spring 2026'
+chapter: 'V'
+cardMeta: 'MSJ 2252 · Digital Audience · Spring 2026'
+listFormat: 'Reflection Paper · 2026'
+format: 'Reflection paper'
+role: 'Individual'
+summary: 'A reflection paper on how audience metrics have moved gatekeeping out of the newsroom, and what that costs court reporting and investigative work.'
+description: 'For the Digital Audience course in the Spring 2026 semester at the University of Liberal Arts Bangladesh (ULAB), I completed an academic reflection paper titled "New Gatekeepers: How Audiences are Reshaping Journalism in Bangladesh." Based on a guest lecture and qualitative analysis, the paper explored how digital audiences increasingly influence newsroom decisions and challenge traditional media gatekeeping. It examined the relationship between audience engagement, court reporting, investigative journalism, and ethical news production in Bangladesh. By reflecting on real legal reporting experiences and current media practices, the project highlighted the need to balance public interest, audience demand, and journalistic responsibility. Overall, the study strengthened my understanding of digital journalism, media ethics, and the evolving role of audiences in today''s news environment.'
+justification: 'This project explores how digital audiences are reshaping journalism in Bangladesh by influencing newsroom decisions and media priorities. I chose this topic after attending a guest lecture that demonstrated the real impact of ethical court reporting and investigative journalism on people''s lives. The study examines the challenge of balancing audience demand for fast, engaging content with the responsibility to report important legal and social issues accurately. It highlights the importance of ethical journalism, investigative reporting, and people-centered storytelling in the digital age. Through this reflection, I hope to encourage greater appreciation for responsible journalism that gives a voice to marginalized communities while maintaining professional integrity and public trust.'
+outcomesLead: 'This project strengthened my research, analytical, and academic writing skills by teaching me how to critically evaluate media issues and connect theoretical concepts with real-world journalism practices. It improved my ability to analyze expert opinions, organize qualitative information, and develop well-structured academic reflections. Through this work, I gained a deeper understanding of digital audience behavior, media gatekeeping, court reporting, and the ethical responsibilities of journalists in the digital age. The project also enhanced my critical thinking by helping me examine the relationship between audience preferences, newsroom decision-making, human rights, and investigative journalism. Overall, this experience made me a more thoughtful, ethical, and socially responsible media communicator, better prepared to balance audience engagement with accurate, meaningful, and public-interest journalism.'
+outcomes: []
+pdf: 'new-gatekeepers.pdf'
+---

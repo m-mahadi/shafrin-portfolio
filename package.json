@@ -1,0 +1,18 @@
+{
+  "name": "shafrin-portfolio",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@fontsource/ibm-plex-mono": "^5.2.5",
+    "@fontsource/instrument-serif": "^5.2.5",
+    "@fontsource/newsreader": "^5.2.5",
+    "@fontsource/noto-serif-bengali": "^5.2.5",
+    "astro": "^5.12.0",
+    "pdfjs-dist": "^5.4.54"
+  }
+}

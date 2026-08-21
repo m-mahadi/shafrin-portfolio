@@ -1,0 +1,20 @@
+---
+slug: 'the-doyel-laptop-project'
+number: '13'
+title: 'The Doyel Laptop Project'
+subtitle: 'Criticism and Analysis of a Failed ICT4D Project in Bangladesh: The Doyel Laptop Project'
+course: 'ICT for Development'
+courseCode: 'MSJ 3261'
+semester: 'Fall 2025'
+chapter: 'V'
+cardMeta: 'MSJ 3261 · ICT for Development · Fall 2025'
+listFormat: 'Position Paper · 2025'
+format: 'Position paper'
+role: 'Individual'
+summary: 'A position paper on why a well-funded national ICT4D initiative failed: hardware quality, procurement, corruption and a misread of what users actually wanted.'
+description: 'During the Fall 2025 semester, I completed a final research project for MSJ3261: ICT for Development at the University of Liberal Arts Bangladesh (ULAB). The study, titled “Criticism and Analysis of a Failed ICT4D Project in Bangladesh: The Doyel Laptop Project,” examined the reasons behind the failure of the government’s Doyel Laptop initiative. Using qualitative desk research and secondary sources, I analyzed the project''s technical, organizational, and market-related challenges, including poor hardware quality, corruption, and low consumer demand. The research highlighted the gap between the project''s original objectives and its actual outcomes, demonstrating that successful digital inclusion requires not only technology but also effective planning, quality management, and long-term implementation strategies.'
+justification: 'This research examines the Doyel Laptop Project, one of Bangladesh’s most widely discussed ICT initiatives, to understand why it failed despite strong government support. I chose this topic because I wanted to identify the factors that prevented the project from achieving its goals and learn valuable lessons for future ICT4D initiatives. The study highlights the importance of effective planning, quality implementation, and understanding users’ needs in technology-based development projects. It also emphasizes the role of user-centered design and public-private partnerships in improving the success of future digital initiatives. Through this research, I hope to contribute practical insights that can support more sustainable, inclusive, and effective ICT development projects in Bangladesh.'
+outcomesLead: 'This project strengthened my research, analytical, and academic writing skills by guiding me through the complete process of conducting an ICT for Development (ICT4D) case study. It improved my ability to collect, evaluate, and synthesize information from academic literature, news reports, and official documents into a well-structured analysis. Through this research, I gained a deeper understanding of the factors that influence the success or failure of technology-based development projects, including planning, implementation, user acceptance, and institutional support. The project also enhanced my critical thinking by encouraging me to evaluate public initiatives based on evidence and real-world outcomes rather than expectations. Overall, this experience made me a more informed and responsible researcher, better prepared to assess and design practical, sustainable, and user-centered ICT development initiatives.'
+outcomes: []
+pdf: 'the-doyel-laptop-project.pdf'
+---

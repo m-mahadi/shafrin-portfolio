@@ -1,0 +1,272 @@
+---
+// Artboard 04 (desktop) / 05 (mobile). Project numbers keep the source order
+// down the page; chapter composition follows the artboard exactly.
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Frame from '../../components/Frame.astro';
+import ArrowLink from '../../components/ArrowLink.astro';
+import { allProjects, href, isBengali } from '../../lib/projects';
+import { chapters } from '../../lib/site';
+import { image } from '../../lib/images';
+
+const projects = await allProjects();
+const find = (n: string) => projects.find((p) => p.data.number === n)!;
+const chapter = (numeral: string) => chapters.find((c) => c.numeral === numeral)!;
+const entries = (...numbers: string[]) => numbers.map(find);
+---
+
+<Base
+  title="Portfolio"
+  description="Fourteen projects from the Media Studies and Journalism department and the Communication for Development track at ULAB, 2023 to 2026."
+>
+  <section class="wrap page-head">
+    <div class="page-head__title">
+      <p class="kicker">§ Portfolio</p>
+      <h1 class="display">Fourteen projects,<br /><em>five preoccupations.</em></h1>
+    </div>
+    <p class="page-head__aside">
+      Coursework from the Media Studies and Journalism department and the Communication for
+      Development track, 2023 to 2026. Grouped by what each piece is actually about rather than by
+      course code.
+    </p>
+  </section>
+
+  {/* Chapter I: plate 01, then notices 02-04 */}
+  <section class="chapter" aria-labelledby="chapter-i">
+    <div class="wrap">
+      <div class="chapter__head">
+        <h2 id="chapter-i">
+          <span class="chapter__numeral" aria-hidden="true">{chapter('I').numeral}</span>
+          <span class="chapter__name">{chapter('I').name}</span>
+        </h2>
+        <p class="chapter__count"><span class="only-desktop">{chapter('I').count}</span><span class="only-mobile">{chapter('I').countShort}</span></p>
+      </div>
+
+      {[find('01')].map((p) => (
+        <article class="plate-row">
+          <Frame class="plate-row__image" offset={16}>
+            <Image src={image(p.data.heroImage)!} alt={p.data.imageAlt!} widths={[624, 1248]} sizes="(max-width: 767px) 100vw, 624px" />
+          </Frame>
+          <div class="plate-row__copy">
+            <p class="plate-head">
+              <span class="num">{p.data.number}</span>
+              <span class="eyebrow eyebrow--wide">{p.data.cardMeta}</span>
+            </p>
+            <h3><a href={href(p)}>{p.data.title}</a></h3>
+            <p>{p.data.summary}</p>
+            <ArrowLink href={href(p)} ariaLabel={`Read ${p.data.title}`} />
+          </div>
+        </article>
+      ))}
+
+      <ul class="entry-list">
+        {entries('02', '03', '04').map((p) => (
+          <li class="entry">
+            <span class="entry__num" aria-hidden="true">{p.data.number}</span>
+            <div class="entry__id">
+              <h3 class:list={[isBengali(p.data.title) && 'bn']}>
+                <a href={href(p)}><span class="visually-hidden">Project {p.data.number}: </span>{p.data.title}</a>
+              </h3>
+              <p class="eyebrow">{p.data.cardMeta}</p>
+            </div>
+            <p class="entry__desc">{p.data.summary}</p>
+            <p class="entry__go">
+              <a href={href(p)} aria-label={`Read ${p.data.title}`}>
+                <svg width="26" height="10" viewBox="0 0 26 10" aria-hidden="true" focusable="false">
+                  <path d="M0 5H24M19.5 0.5L24.5 5L19.5 9.5" fill="none" stroke="var(--color-pink)" stroke-width="1.2"></path>
+                </svg>
+              </a>
+            </p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  {/* Chapter II: a two-column pair on the tinted band */}
+  <section class="chapter chapter--wash" aria-labelledby="chapter-ii">
+    <div class="wrap">
+      <div class="chapter__head">
+        <h2 id="chapter-ii">
+          <span class="chapter__numeral" aria-hidden="true">{chapter('II').numeral}</span>
+          <span class="chapter__name">{chapter('II').name}</span>
+        </h2>
+        <p class="chapter__count"><span class="only-desktop">{chapter('II').count}</span><span class="only-mobile">{chapter('II').countShort}</span></p>
+      </div>
+
+      <div class="pair">
+        {entries('05', '06').map((p) => (
+          <article class="pair__item">
+            <p class="num" aria-hidden="true">{p.data.number}</p>
+            <h3><a href={href(p)}>{p.data.title}</a></h3>
+            <p class="eyebrow">{p.data.cardMeta}</p>
+            <p>{p.data.summary}</p>
+            <ArrowLink href={href(p)} arrow={false} ariaLabel={`Read ${p.data.title}`} />
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* Chapter III: plate 07 with the copy first, then notice 08 */}
+  <section class="chapter chapter--inset" aria-labelledby="chapter-iii">
+    <div class="wrap">
+      <div class="chapter__head">
+        <h2 id="chapter-iii">
+          <span class="chapter__numeral" aria-hidden="true">{chapter('III').numeral}</span>
+          <span class="chapter__name">{chapter('III').name}</span>
+        </h2>
+        <p class="chapter__count"><span class="only-desktop">{chapter('III').count}</span><span class="only-mobile">{chapter('III').countShort}</span></p>
+      </div>
+
+      {[find('07')].map((p) => (
+        <article class="plate-row">
+          <div class="plate-row__copy">
+            <p class="plate-head">
+              <span class="num">{p.data.number}</span>
+              <span class="eyebrow eyebrow--wide">{p.data.cardMeta}</span>
+            </p>
+            <h3 class="bn"><a href={href(p)}>{p.data.titleBn}</a></h3>
+            <p class="en-sub">{p.data.title}</p>
+            <p>{p.data.summary}</p>
+            <ArrowLink href={href(p)} ariaLabel={`Read ${p.data.title}`} />
+          </div>
+          <Frame class="plate-row__image" offset={16} side="left">
+            <Image src={image(p.data.heroImage)!} alt={p.data.imageAlt!} widths={[624, 1248]} sizes="(max-width: 767px) 100vw, 624px" />
+          </Frame>
+        </article>
+      ))}
+
+      <ul class="entry-list">
+        {entries('08').map((p) => (
+          <li class="entry">
+            <span class="entry__num" aria-hidden="true">{p.data.number}</span>
+            <div class="entry__id">
+              <h3><a href={href(p)}><span class="visually-hidden">Project {p.data.number}: </span>{p.data.title}</a></h3>
+              <p class="eyebrow">{p.data.cardMeta}</p>
+            </div>
+            <p class="entry__desc">{p.data.summary}</p>
+            <p class="entry__go">
+              <a href={href(p)} aria-label={`Read ${p.data.title}`}>
+                <svg width="26" height="10" viewBox="0 0 26 10" aria-hidden="true" focusable="false">
+                  <path d="M0 5H24M19.5 0.5L24.5 5L19.5 9.5" fill="none" stroke="var(--color-pink)" stroke-width="1.2"></path>
+                </svg>
+              </a>
+            </p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  {/* Chapter IV: tall plate 09 with method/site, then notice 10 */}
+  <section class="chapter" aria-labelledby="chapter-iv">
+    <div class="wrap">
+      <div class="chapter__head">
+        <h2 id="chapter-iv">
+          <span class="chapter__numeral" aria-hidden="true">{chapter('IV').numeral}</span>
+          <span class="chapter__name">{chapter('IV').name}</span>
+        </h2>
+        <p class="chapter__count"><span class="only-desktop">{chapter('IV').count}</span><span class="only-mobile">{chapter('IV').countShort}</span></p>
+      </div>
+
+      {[find('09')].map((p) => (
+        <article class="plate-row plate-row--wide">
+          <Frame class="plate-row__image plate-row__image--tall" offset={16}>
+            <Image src={image(p.data.plateImage)!} alt={p.data.imageAlt!} widths={[412, 824]} sizes="(max-width: 767px) 100vw, 412px" />
+          </Frame>
+          <div class="plate-row__copy plate-row__copy--wide">
+            <p class="plate-head">
+              <span class="num">{p.data.number}</span>
+              <span class="eyebrow eyebrow--wide">{p.data.cardMeta}</span>
+            </p>
+            <h3><a href={href(p)}>{p.data.title}</a></h3>
+            <p>{p.data.summary}</p>
+            <dl class="plate-meta">
+              <div>
+                <dt class="eyebrow">Method</dt>
+                <dd>{p.data.method}</dd>
+              </div>
+              <div>
+                <dt class="eyebrow">Site</dt>
+                <dd>{p.data.site}</dd>
+              </div>
+            </dl>
+            <ArrowLink href={href(p)} ariaLabel={`Read ${p.data.title}`} />
+          </div>
+        </article>
+      ))}
+
+      <ul class="entry-list">
+        {entries('10').map((p) => (
+          <li class="entry">
+            <span class="entry__num" aria-hidden="true">{p.data.number}</span>
+            <div class="entry__id">
+              <h3><a href={href(p)}><span class="visually-hidden">Project {p.data.number}: </span>{p.data.title}</a></h3>
+              <p class="eyebrow">{p.data.cardMeta}</p>
+            </div>
+            <p class="entry__desc">{p.data.summary}</p>
+            <p class="entry__go">
+              <a href={href(p)} aria-label={`Read ${p.data.title}`}>
+                <svg width="26" height="10" viewBox="0 0 26 10" aria-hidden="true" focusable="false">
+                  <path d="M0 5H24M19.5 0.5L24.5 5L19.5 9.5" fill="none" stroke="var(--color-pink)" stroke-width="1.2"></path>
+                </svg>
+              </a>
+            </p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  {/* Chapter V: two-up plates 11 and 12, then notices 13 and 14 */}
+  <section class="chapter" aria-labelledby="chapter-v">
+    <div class="wrap">
+      <div class="chapter__head">
+        <h2 id="chapter-v">
+          <span class="chapter__numeral" aria-hidden="true">{chapter('V').numeral}</span>
+          <span class="chapter__name">{chapter('V').name}</span>
+        </h2>
+        <p class="chapter__count"><span class="only-desktop">{chapter('V').count}</span><span class="only-mobile">{chapter('V').countShort}</span></p>
+      </div>
+
+      <div class="two-up">
+        {entries('11', '12').map((p, i) => (
+          <article class="two-up__item">
+            <Frame offset={14} side={i === 0 ? 'right' : 'left'}>
+              <Image src={image(p.data.heroImage)!} alt={p.data.imageAlt!} widths={[600, 1200]} sizes="(max-width: 767px) 100vw, 600px" />
+            </Frame>
+            <div class="two-up__foot">
+              <span class="num" aria-hidden="true">{p.data.number}</span>
+              <div>
+                <p class="eyebrow">{p.data.cardMeta}</p>
+                <h3><a href={href(p)}>{p.data.title}</a></h3>
+                <p>{p.data.summary}</p>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <ul class="entry-list entry-list--tight">
+        {entries('13', '14').map((p) => (
+          <li class="entry">
+            <span class="entry__num" aria-hidden="true">{p.data.number}</span>
+            <div class="entry__id">
+              <h3><a href={href(p)}><span class="visually-hidden">Project {p.data.number}: </span>{p.data.title}</a></h3>
+              <p class="eyebrow">{p.data.cardMeta}</p>
+            </div>
+            <p class="entry__desc">{p.data.summary}</p>
+            <p class="entry__go">
+              <a href={href(p)} aria-label={`Read ${p.data.title}`}>
+                <svg width="26" height="10" viewBox="0 0 26 10" aria-hidden="true" focusable="false">
+                  <path d="M0 5H24M19.5 0.5L24.5 5L19.5 9.5" fill="none" stroke="var(--color-pink)" stroke-width="1.2"></path>
+                </svg>
+              </a>
+            </p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>

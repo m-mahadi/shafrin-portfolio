@@ -1,0 +1,124 @@
+---
+import { nav, menuNav, site } from '../lib/site';
+
+interface Props {
+  path: string;
+}
+const { path } = Astro.props;
+const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+
+<header class="site-header">
+  <div class="riso" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="nav">
+      <p class="wordmark">
+        <a class="wordmark__name" href="/">{site.name}</a>
+        <span class="wordmark__tag">{site.tagline}</span>
+      </p>
+
+      <nav class="nav__links" aria-label="Primary">
+        {nav.map((item) => (
+          <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a>
+        ))}
+      </nav>
+
+      <button
+        class="nav__toggle"
+        type="button"
+        id="menu-open"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        Menu
+        <svg width="20" height="12" viewBox="0 0 20 12" aria-hidden="true" focusable="false">
+          <path d="M0 1h20M0 11h20" fill="none" stroke="var(--color-pink)" stroke-width="1.4"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="menu" id="mobile-menu" role="dialog" aria-modal="true" aria-label="Site menu" hidden>
+  <div class="menu__bar">
+    <strong>{site.name}</strong>
+    <button class="menu__close" type="button" id="menu-close">
+      Close
+      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+        <path d="M1 1l14 14M15 1L1 15" fill="none" stroke="var(--color-pink)" stroke-width="1.4"></path>
+      </svg>
+    </button>
+  </div>
+
+  <nav class="menu__list" aria-label="Site menu">
+    {menuNav.map((item, index) => (
+      <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>
+        <span class="menu__num" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+        <span class="menu__label">{item.label}</span>
+      </a>
+    ))}
+  </nav>
+
+  <div class="menu__foot">
+    <a href={`mailto:${site.email}`}>{site.email}</a>
+    <small>{site.department}</small>
+  </div>
+</div>
+
+<script>
+  const openButton = document.getElementById('menu-open');
+  const closeButton = document.getElementById('menu-close');
+  const menu = document.getElementById('mobile-menu');
+
+  if (openButton && closeButton && menu) {
+    const focusables = () =>
+      Array.from(
+        menu.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'),
+      ).filter((el) => el.offsetParent !== null);
+
+    const onKeydown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        close();
+        return;
+      }
+      if (event.key !== 'Tab') return;
+      const items = focusables();
+      if (items.length === 0) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    function open() {
+      menu!.hidden = false;
+      menu!.classList.add('is-open');
+      openButton!.setAttribute('aria-expanded', 'true');
+      document.documentElement.style.overflow = 'hidden';
+      document.addEventListener('keydown', onKeydown);
+      focusables()[0]?.focus();
+    }
+
+    function close() {
+      menu!.classList.remove('is-open');
+      menu!.hidden = true;
+      openButton!.setAttribute('aria-expanded', 'false');
+      document.documentElement.style.overflow = '';
+      document.removeEventListener('keydown', onKeydown);
+      openButton!.focus();
+    }
+
+    openButton.addEventListener('click', open);
+    closeButton.addEventListener('click', close);
+    // A wide viewport removes the trigger; do not leave the sheet stranded open.
+    window.matchMedia('(min-width: 768px)').addEventListener('change', (event) => {
+      if (event.matches && !menu.hidden) close();
+    });
+  }
+</script>

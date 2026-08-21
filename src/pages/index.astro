@@ -1,0 +1,168 @@
+---
+// Artboard 01 (desktop) / 02 (mobile). No project numbers anywhere on this
+// page, by decision — do not reintroduce them.
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Frame from '../components/Frame.astro';
+import Placeholder from '../components/Placeholder.astro';
+import ArrowLink from '../components/ArrowLink.astro';
+import { allProjects, href, isBengali } from '../lib/projects';
+import { image } from '../lib/images';
+
+const projects = await allProjects();
+const find = (n: string) => projects.find((p) => p.data.number === n)!;
+
+const featured = find('01');
+const pairA = find('07');
+const pairB = find('09');
+const featuredNumbers = new Set(['01', '07', '09']);
+const rest = projects.filter((p) => !featuredNumbers.has(p.data.number));
+const columns = [rest.slice(0, 6), rest.slice(6)];
+---
+
+<Base
+  title="Home"
+  description="Portfolio of Shafrin Akter Chowdhury, a Media Studies and Journalism student at ULAB."
+>
+  <section class="wrap hero">
+    <div class="hero__copy">
+      <p class="eyebrow eyebrow--wide">Media Studies &amp; Journalism · ULAB</p>
+
+      <h1 class="display hero__headline">
+        Reporting on what<br /><em class="pink">stays silent.</em>
+      </h1>
+
+      <p class="lead hero__lead">
+        I have studied Media Studies and Journalism at the University of Liberal Arts Bangladesh
+        since 2022, majoring in Communication for Development. My studies strengthened my awareness
+        of social issues and the importance of addressing inequality and injustice, which is why
+        most of my work begins with a real-world social challenge.
+      </p>
+
+      <div class="hero__facts">
+        <dl class="facts">
+          <div>
+            <dt class="eyebrow eyebrow--wide">Based in</dt>
+            <dd>Keraniganj, Dhaka</dd>
+          </div>
+          <div>
+            <dt class="eyebrow eyebrow--wide">Major</dt>
+            <dd>Comm. for Development</dd>
+          </div>
+          <div>
+            <dt class="eyebrow eyebrow--wide">Projects</dt>
+            <dd>Fourteen</dd>
+          </div>
+        </dl>
+
+        <ArrowLink href="/portfolio" label="See the portfolio" />
+      </div>
+    </div>
+
+    <Frame class="hero__portrait" side="left">
+      <Placeholder
+        label="Portrait placeholder"
+        note="Photograph to be supplied. No usable portrait exists in the source report."
+      />
+    </Frame>
+  </section>
+
+  <section class="wrap" aria-labelledby="selected-work" style="padding-bottom: 120px;">
+    <div class="rule-head">
+      <div class="rule-head__left">
+        <h2 class="kicker" id="selected-work">§ Selected work</h2>
+        <p class="section-note">Three of fourteen.</p>
+      </div>
+      <p class="rule-head__meta">2023 — 2026</p>
+    </div>
+
+    <article class="feature">
+      <Frame class="feature__image">
+        <Image src={image(featured.data.heroImage)!} alt={featured.data.imageAlt!} widths={[748, 1496]} sizes="(max-width: 767px) 100vw, 748px" />
+      </Frame>
+      <div class="feature__copy">
+        <p class="eyebrow eyebrow--wide">{featured.data.cardMeta}</p>
+        <h3><a href={href(featured)}>{featured.data.title}</a></h3>
+        <p>{featured.data.homeSummary}</p>
+        <ArrowLink href={href(featured)} label="Read project" arrow={false} ariaLabel={`Read ${featured.data.title}`} />
+      </div>
+    </article>
+
+    <div class="feature-pair">
+      <article class="feature-pair__a">
+        <Frame offset={16}>
+          <Image src={image(pairA.data.heroImage)!} alt={pairA.data.imageAlt!} widths={[660, 1320]} sizes="(max-width: 767px) 100vw, 660px" />
+        </Frame>
+        <div>
+          <p class="eyebrow eyebrow--wide">{pairA.data.cardMeta}</p>
+          <h3><a href={href(pairA)}>{pairA.data.title}</a></h3>
+          <p>{pairA.data.homeSummary}</p>
+        </div>
+      </article>
+
+      <article class="feature-pair__b">
+        <Frame offset={16} side="left">
+          <Image src={image(pairB.data.plateImage ?? pairB.data.heroImage)!} alt={pairB.data.imageAlt!} widths={[412, 824]} sizes="(max-width: 767px) 100vw, 412px" />
+        </Frame>
+        <div>
+          <p class="eyebrow eyebrow--wide">{pairB.data.cardMeta}</p>
+          <h3><a href={href(pairB)}>{pairB.data.title}</a></h3>
+          <p>{pairB.data.homeSummary}</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="wrap" aria-labelledby="rest-of-index" style="padding-bottom: 120px;">
+    <div class="rule-head">
+      <h2 class="kicker" id="rest-of-index">§ The rest of the index</h2>
+      <p class="rule-head__meta"><span class="only-desktop">The other eleven</span><span class="only-mobile">11 more</span></p>
+    </div>
+
+    <div class="index">
+      {columns.map((column, columnIndex) => (
+        <div class="index__col">
+          <ul>
+            {column.map((project) => (
+              <li class="index__row">
+                <a class:list={['t', isBengali(project.data.title) && 'bn']} href={href(project)}>
+                  {project.data.title}
+                </a>
+                <span class="m">{project.data.listFormat}</span>
+              </li>
+            ))}
+          </ul>
+          {columnIndex === 1 && (
+            <p class="index__all">
+              <a href="/portfolio"><span>All fourteen projects</span></a>
+              <svg width="30" height="11" viewBox="0 0 30 11" aria-hidden="true" focusable="false">
+                <path d="M0 5.5H28M23 1L28.5 5.5L23 10" fill="none" stroke="var(--color-pink)" stroke-width="1.3"></path>
+              </svg>
+            </p>
+          )}
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="band band--wash band--96">
+    <div class="wrap about-teaser">
+      <div class="about-teaser__quote">
+        <h2 class="kicker kicker--oxblood">§ About</h2>
+        <blockquote>
+          “Studying at ULAB has transformed the way I think, enabling me to analyze issues more
+          critically and recognize multiple perspectives beyond what is immediately visible.”
+        </blockquote>
+      </div>
+      <div class="about-teaser__side">
+        <p>
+          From an early age I wanted to build a career in journalism. Four years later the work has
+          widened: mental health, elderly abandonment, air pollution, misinformation, gender-based
+          violence, child labour. The method stays the same — go and ask, then report it
+          carefully.
+        </p>
+        <ArrowLink href="/about" label="Read the full story" arrow={false} />
+      </div>
+    </div>
+  </section>
+</Base>

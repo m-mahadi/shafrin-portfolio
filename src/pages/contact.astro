@@ -1,0 +1,69 @@
+---
+// Artboard 11. Only the ULAB address is published. The social row stays a
+// labelled placeholder until handles are supplied.
+import Base from '../layouts/Base.astro';
+import { site } from '../lib/site';
+---
+
+<Base
+  title="Contact"
+  description="Get in touch with Shafrin Akter Chowdhury about reporting work, research assistance and communication for development roles."
+>
+  <section class="wrap contact">
+    <div class="contact__copy">
+      <p class="kicker">§ Contact</p>
+      <h1 class="display">Say hello, or<br /><em class="pink">send me a story.</em></h1>
+      <p>
+        Open to reporting work, research assistance and communication for development roles. If you
+        are working on something in Dhaka that deserves attention, I would like to hear about it.
+      </p>
+
+      <dl class="channels">
+        <div>
+          <dt>Email</dt>
+          <dd><a href={`mailto:${site.email}`}>{site.email}</a></dd>
+        </div>
+        <div>
+          <dt>Blog</dt>
+          <dd><a href={site.blog} rel="noopener">{site.blogLabel} ↗</a></dd>
+        </div>
+        <div>
+          <dt>Based in</dt>
+          <dd class="plain">{site.location}</dd>
+        </div>
+        <div>
+          <dt>Social</dt>
+          <dd class="pending">Handles to be supplied</dd>
+        </div>
+      </dl>
+    </div>
+
+    <div class="contact__form">
+      <div class="frame__shadow" aria-hidden="true"></div>
+      <form action={`mailto:${site.email}`} method="post" enctype="text/plain">
+        <h2>Write to me</h2>
+        <p>I reply to everything that is not a mailing list.</p>
+
+        <div class="field">
+          <label for="name">Your name</label>
+          <input id="name" name="name" type="text" autocomplete="name" required />
+        </div>
+
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" autocomplete="email" required />
+        </div>
+
+        <div class="field field--accent">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="What are you working on?" required></textarea>
+        </div>
+
+        <div class="form-foot">
+          <button type="submit">Send message</button>
+          <span>Usually a reply within a few days.</span>
+        </div>
+      </form>
+    </div>
+  </section>
+</Base>

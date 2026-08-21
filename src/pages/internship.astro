@@ -1,0 +1,85 @@
+---
+// Artboard 10. The report contains no internship section: the copy and the PDF
+// slot are both still to be supplied, and the page says so.
+import Base from '../layouts/Base.astro';
+import Notice from '../components/Notice.astro';
+import PdfViewer from '../components/PdfViewer.astro';
+import { inspectPdf } from '../lib/pdf';
+
+const pdf = await inspectPdf('internship-report.pdf');
+const lessons = [
+  'Two or three sentences on what happened and what changed as a result. Kept concrete: a task, a mistake, a correction.',
+  'Two or three sentences on what happened and what changed as a result.',
+  'Two or three sentences on what happened and what changed as a result.',
+];
+---
+
+<Base
+  title="Internship Report"
+  description="The internship report of Shafrin Akter Chowdhury. Copy and document pending."
+>
+  <section class="wrap page-head">
+    <div class="page-head__title">
+      <p class="kicker">§ Internship Report</p>
+      <h1 class="display">The newsroom,<br /><em>from the inside.</em></h1>
+    </div>
+    <div class="page-head__aside">
+      <p>
+        The responsibilities taken on, the tasks completed and what the training changed about how I
+        work. The full report is embedded below and can be downloaded.
+      </p>
+      <dl>
+        <dt class="eyebrow">Organisation · Period</dt>
+        <dd>To be supplied</dd>
+      </dl>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <Notice>
+      Placeholder content. The supplied portfolio report contains no internship section. The page
+      below is the finished layout with the copy left for Shafrin to write and the PDF still to be
+      attached.
+    </Notice>
+  </div>
+
+  <section class="report-band report-band--internship" aria-labelledby="internship-report">
+    <div class="wrap">
+      <div class="rule-head">
+        <div class="rule-head__left">
+          <h2 class="kicker kicker--oxblood" id="internship-report">§ The report</h2>
+          <p class="section-note">Full document.</p>
+        </div>
+        <p class="report-band__meta">
+          {pdf ? `${pdf.pages} pages · ${pdf.size} · PDF` : '— pages · PDF to be attached'}
+        </p>
+      </div>
+
+      <PdfViewer
+        pdf={pdf}
+        fallbackName="internship-report.pdf"
+        slotNote="The internship report renders here at fit-width once the file is supplied. Page count, thumbnails and the progress bar populate from the document."
+        label="Internship report"
+      />
+    </div>
+  </section>
+
+  <section class="wrap lessons" style="padding-bottom: 110px;" aria-labelledby="learning-outcome">
+    <div class="lessons__intro">
+      <h2 class="kicker" id="learning-outcome">Learning &amp; outcome</h2>
+      <p>Three things the training changed.</p>
+    </div>
+
+    <ol class="lessons__list">
+      {lessons.map((lesson, i) => (
+        <li>
+          <span class="n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          <div>
+            <h3>Lesson heading</h3>
+            <p>{lesson}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </section>
+</Base>

@@ -1,0 +1,25 @@
+---
+// Motif 1: an off-register pink-wash block sitting 14–18px behind every
+// photograph. `side` says which way the block is thrown; `offset` matches the
+// artboard it is copied from.
+interface Props {
+  side?: 'right' | 'left';
+  offset?: 14 | 16 | 18;
+  class?: string;
+}
+const { side = 'right', offset = 18, class: className = '' } = Astro.props;
+const classes = [
+  'frame',
+  side === 'left' ? 'frame--left' : '',
+  offset === 16 ? 'frame--16' : '',
+  offset === 14 ? 'frame--14' : '',
+  className,
+]
+  .filter(Boolean)
+  .join(' ');
+---
+
+<div class={classes}>
+  <div class="frame__shadow" aria-hidden="true"></div>
+  <div class="frame__body"><slot /></div>
+</div>

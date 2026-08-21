@@ -1,0 +1,24 @@
+---
+interface Props {
+  href: string;
+  label?: string;
+  direction?: 'right' | 'left';
+  arrow?: boolean;
+  ariaLabel?: string;
+}
+const { href, label = 'Read project', direction = 'right', arrow = true, ariaLabel } = Astro.props;
+---
+
+<a class="cta" href={href} aria-label={ariaLabel}>
+  {direction === 'left' && arrow && (
+    <svg width="26" height="10" viewBox="0 0 26 10" aria-hidden="true" focusable="false">
+      <path d="M26 5H2M6.5 0.5L1.5 5L6.5 9.5" fill="none" stroke="var(--color-pink)" stroke-width="1.2"></path>
+    </svg>
+  )}
+  <span class="cta__label">{label}</span>
+  {direction === 'right' && arrow && (
+    <svg width="26" height="10" viewBox="0 0 26 10" aria-hidden="true" focusable="false">
+      <path d="M0 5H24M19.5 0.5L24.5 5L19.5 9.5" fill="none" stroke="var(--color-pink)" stroke-width="1.2"></path>
+    </svg>
+  )}
+</a>

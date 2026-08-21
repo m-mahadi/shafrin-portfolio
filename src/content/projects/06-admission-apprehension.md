@@ -1,0 +1,20 @@
+---
+slug: 'admission-apprehension'
+number: '06'
+title: 'Admission Apprehension'
+subtitle: 'Exploring the Reasons of Bangladeshi Students'' Apprehension and Its Impact During and After University Admission'
+course: 'Communication Research'
+courseCode: 'MSJ 1201'
+semester: 'Spring 2023'
+chapter: 'II'
+cardMeta: 'MSJ 1201 · Communication Research · Spring 2023'
+listFormat: 'Research Proposal · 2023'
+format: 'Research proposal'
+role: 'Group project'
+summary: 'A qualitative research proposal on the fear surrounding university admission in Bangladesh, built on semi-structured interviews and cluster sampling, and on what limited seats, family expectation and social pressure do to candidates before and after the exam.'
+description: 'During the Spring 2023 semester, my group and I prepared a research proposal for the course MSJ1201: Communication Research at the University of Liberal Arts Bangladesh (ULAB). The study, titled "Exploring the Reasons of Bangladeshi Students'' Apprehension and Its Impact During and After University Admission," examined the causes of fear and anxiety among university admission candidates and their effects on students'' mental health. Using a qualitative approach with semi-structured interviews and cluster sampling, we aimed to collect students'' personal experiences from different regions of Bangladesh. The research also reviewed previous studies, national statistics, and news reports to better understand admission-related stress. The project proposed practical insights to help families, educational institutions, and society reduce admission pressure and promote a healthier attitude toward higher education.'
+justification: 'This research focuses on the mental health challenges faced by Bangladeshi students during the highly competitive university admission process. It explores how limited public university seats, family expectations, and social pressure contribute to fear, anxiety, and emotional stress among admission candidates. I chose this topic because these issues affect thousands of students each year but often receive little attention. The study aims to raise awareness and provide insights that can help families, educators, and policymakers create a more supportive and less stressful admission environment.'
+outcomesLead: 'This project strengthened my academic research skills by improving my ability to develop research questions, objectives, and research plans. It enhanced my understanding of research methods, data collection, and literature review while increasing my knowledge of mental health and academic pressure among university admission candidates in Bangladesh. The project also improved my critical thinking, analytical, and communication skills, helping me become a more responsible and ethical communication researcher.'
+outcomes: []
+pdf: 'admission-apprehension.pdf'
+---

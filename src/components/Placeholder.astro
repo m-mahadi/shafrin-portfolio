@@ -1,0 +1,27 @@
+---
+// The labelled placeholder plate drawn on Home, About and Extra Curricular.
+// Nothing here is invented content; it states plainly what is still missing.
+// The crosshair is the mark used on every empty slot in the artboards.
+interface Props {
+  label: string;
+  note?: string;
+  variant?: 'solid' | 'dashed';
+  markSize?: number;
+}
+const { label, note, variant = 'solid', markSize = 34 } = Astro.props;
+---
+
+<div class:list={['plate', variant === 'dashed' && 'plate--dashed']}>
+  <svg
+    width={markSize}
+    height={markSize}
+    viewBox="0 0 34 34"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <path d="M17 0V34M0 17H34" fill="none" stroke="var(--color-pink)"></path>
+    <circle cx="17" cy="17" r="9.5" fill="none" stroke="var(--color-pink)"></circle>
+  </svg>
+  <p class="plate__label">{label}</p>
+  {note && <p class="plate__note">{note}</p>}
+</div>

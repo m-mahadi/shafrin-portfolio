@@ -1,0 +1,162 @@
+---
+// Artboards 06 (desktop) / 07 (mobile) are a template, drawn with project 09.
+// One dynamic route drives all fourteen.
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Frame from '../../components/Frame.astro';
+import PdfViewer from '../../components/PdfViewer.astro';
+import { allProjects, neighbours, isBengali, type Project } from '../../lib/projects';
+import { chapterOf } from '../../lib/site';
+import { image } from '../../lib/images';
+import { inspectPdf } from '../../lib/pdf';
+
+export async function getStaticPaths() {
+  const projects = await allProjects();
+  return projects.map((project) => ({
+    params: { slug: project.data.slug },
+    props: { project },
+  }));
+}
+
+interface Props {
+  project: Project;
+}
+const { project } = Astro.props;
+const d = project.data;
+const chapter = chapterOf(d.chapter);
+const { previous, next } = await neighbours(d.number);
+const hero = image(d.heroImage);
+const pdf = await inspectPdf(d.pdf);
+const bengaliTitle = d.titleBn && isBengali(d.titleBn);
+---
+
+<Base title={`${d.number}: ${d.title}`} description={d.summary}>
+  <div class="wrap">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <svg width="26" height="10" viewBox="0 0 26 10" aria-hidden="true" focusable="false">
+        <path d="M26 5H2M6.5 0.5L1.5 5L6.5 9.5" fill="none" stroke="var(--color-pink)" stroke-width="1.2"></path>
+      </svg>
+      <a href="/portfolio">Portfolio</a>
+      <span class="crumb-chapter" aria-hidden="true">/</span>
+      <span class="crumb-chapter">{chapter.name}</span>
+    </nav>
+
+    <header class="project-head">
+      <div class="project-head__main">
+        <p class="project-head__num" aria-hidden="true">{d.number}</p>
+        <h1 class:list={[bengaliTitle && 'bn']}>
+          <span class="visually-hidden">Project {d.number}: </span>{bengaliTitle ? d.titleBn : d.title}
+        </h1>
+        {d.subtitle && <p class="project-head__sub">{d.subtitle}</p>}
+      </div>
+
+      <dl class="project-meta">
+        <div>
+          <dt class="eyebrow">Course</dt>
+          <dd>{d.courseCode} · {d.course}</dd>
+        </div>
+        <div>
+          <dt class="eyebrow">Semester</dt>
+          <dd>{d.semester}</dd>
+        </div>
+        <div>
+          <dt class="eyebrow">Format</dt>
+          <dd>{d.format}</dd>
+        </div>
+        <div>
+          <dt class="eyebrow">Role</dt>
+          <dd>{d.role}</dd>
+        </div>
+      </dl>
+    </header>
+
+    {hero && (
+      <figure class="project-hero">
+        <Frame offset={18}>
+          <Image src={hero} alt={d.imageAlt ?? d.summary} widths={[1248, 2496]} sizes="(max-width: 767px) 100vw, 1248px" />
+        </Frame>
+        {d.heroCaption && (
+          <figcaption class="figcaption">
+            <b>Fig.1</b>
+            <span>{d.heroCaption}</span>
+          </figcaption>
+        )}
+      </figure>
+    )}
+
+    <div class="prose">
+      <section class="prose__block">
+        <h2 class="kicker">Description</h2>
+        <p>{d.description}</p>
+      </section>
+
+      <section class="prose__block">
+        <h2 class="kicker">Justification</h2>
+        <p>{d.justification}</p>
+      </section>
+
+      <section class="prose__block">
+        <h2 class="kicker">Outcomes</h2>
+        <div>
+          <p>{d.outcomesLead}</p>
+          {d.outcomes.length > 0 && (
+            <ol class="outcomes">
+              {d.outcomes.map((outcome, i) => (
+                <li>
+                  <span class="n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                  <span class="b">{outcome}</span>
+                </li>
+              ))}
+            </ol>
+          )}
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <section class="report-band" aria-labelledby="the-report">
+    <div class="wrap">
+      <div class="rule-head">
+        <div class="rule-head__left">
+          <h2 class="kicker kicker--oxblood" id="the-report">§ The report</h2>
+          <p class="section-note">{pdf ? 'Read it in full below.' : 'Document to be attached.'}</p>
+        </div>
+        <p class="report-band__meta">
+          {pdf ? `${pdf.pages} pages · ${pdf.size} · PDF` : '— pages · PDF to be attached'}
+        </p>
+      </div>
+
+      <PdfViewer
+        pdf={pdf}
+        fallbackName={`${d.slug}.pdf`}
+        slotNote="The project report renders here at fit-width once the file is supplied. Page count, thumbnails and the progress bar populate from the document."
+        label={`${d.title} report`}
+      />
+    </div>
+  </section>
+
+  <nav class="wrap project-nav" aria-label="Other projects">
+    {previous ? (
+      <a href={`/portfolio/${previous.data.slug}`}>
+        <small>← Previous · {previous.data.number}</small>
+        <strong>{previous.data.title}</strong>
+      </a>
+    ) : (
+      <a href="/portfolio">
+        <small>← Back</small>
+        <strong>All fourteen projects</strong>
+      </a>
+    )}
+    {next ? (
+      <a href={`/portfolio/${next.data.slug}`}>
+        <small>Next · {next.data.number} →</small>
+        <strong>{next.data.title}</strong>
+      </a>
+    ) : (
+      <a href="/portfolio">
+        <small>Back →</small>
+        <strong>All fourteen projects</strong>
+      </a>
+    )}
+  </nav>
+</Base>

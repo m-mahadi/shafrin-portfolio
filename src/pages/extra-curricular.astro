@@ -1,0 +1,55 @@
+---
+// Artboard 09. The report contains no extracurricular section, so the three
+// entries stay labelled templates and the page keeps its pink notice.
+import Base from '../layouts/Base.astro';
+import Frame from '../components/Frame.astro';
+import Placeholder from '../components/Placeholder.astro';
+import Notice from '../components/Notice.astro';
+
+const slots = [1, 2, 3];
+const body =
+  'Two short paragraphs, roughly sixty to ninety words in total. What the activity was, what Shafrin did inside it, and what it taught her that the coursework did not. Written in the same first-person voice as the project pages.';
+---
+
+<Base
+  title="Extra Curricular"
+  description="Clubs, campus media, volunteering and workshops alongside the coursework. Content pending."
+>
+  <section class="wrap page-head">
+    <div class="page-head__title">
+      <p class="kicker">§ Extra Curricular</p>
+      <h1 class="display">Outside the<br /><em>syllabus.</em></h1>
+    </div>
+    <p class="page-head__aside">
+      Clubs, campus media, volunteering and workshops that sat alongside the coursework. Each entry
+      holds a short account and, where one exists, a photograph or certificate.
+    </p>
+  </section>
+
+  <div class="wrap" style="padding-bottom: 44px;">
+    <Notice>
+      Placeholder content. The portfolio report supplied for this design contains no extracurricular
+      section, so the three entries below are empty templates showing structure and text lengths.
+      Nothing here has been invented on Shafrin's behalf.
+    </Notice>
+  </div>
+
+  <div class="wrap" style="padding-bottom: 110px;">
+    {slots.map((n) => (
+      <article class:list={['activity', n === 2 && 'activity--flip']}>
+        <Frame class="activity__image" offset={14}>
+          <Placeholder label="Image slot · 3:2" variant="dashed" markSize={26} />
+        </Frame>
+        <div class="activity__copy">
+          <p class="plate-head">
+            <span class="num" aria-hidden="true">{String(n).padStart(2, '0')}</span>
+            <span class="eyebrow">Role · Organisation · Period</span>
+          </p>
+          <h2>Activity title goes here</h2>
+          <p>{body}</p>
+          <p class="cta"><span class="cta__label">Optional link</span></p>
+        </div>
+      </article>
+    ))}
+  </div>
+</Base>

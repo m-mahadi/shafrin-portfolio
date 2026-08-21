@@ -1,0 +1,37 @@
+---
+import { footerNav, site } from '../lib/site';
+---
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__row">
+      <p class="footer__id">
+        <strong>{site.name}</strong>
+        <a href={`mailto:${site.email}`}>{site.email}</a>
+      </p>
+
+      <nav class="footer__links" aria-label="Footer">
+        {footerNav.map((group) => (
+          <ul>
+            {group.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  class={'external' in item && item.external ? 'blog' : undefined}
+                  rel={'external' in item && item.external ? 'noopener' : undefined}
+                >{'short' in item && item.short
+                  ? <><span class="only-desktop">{item.label}</span><span class="only-mobile">{item.short}</span></>
+                  : item.label}</a>
+              </li>
+            ))}
+          </ul>
+        ))}
+      </nav>
+    </div>
+
+    <div class="footer__colophon">
+      <span>{site.colophon}</span>
+      <span>{site.department}</span>
+    </div>
+  </div>
+</footer>

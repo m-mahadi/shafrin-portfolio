@@ -1,0 +1,20 @@
+---
+slug: 'wes-anderson-in-colour'
+number: '03'
+title: 'Wes Anderson, in Colour'
+subtitle: 'Podcast Report: Wes Anderson, produced for Prova''s Podcast'
+course: 'Advance English Writing Skills'
+courseCode: 'GEF 1202'
+semester: 'Summer 2023'
+chapter: 'I'
+cardMeta: 'GEF 1202 · Advance English Writing · Summer 2023'
+listFormat: 'Podcast · 2023'
+format: 'Podcast'
+role: 'Individual'
+summary: 'A podcast report on Wes Anderson''s use of colour and composition, and how film aesthetics travel into classrooms, social media and youth taste.'
+description: 'As part of my undergraduate Advance English Writing Skills (GEF1202) course at the University of Liberal Arts Bangladesh (ULAB), I completed a final project titled “Podcast Report: Wes Anderson” for Prova’s Podcast. The project explored Wes Anderson’s distinctive filmmaking style, with a focus on his use of color, visual composition, and storytelling techniques. Using qualitative secondary research, visual media analysis, and podcast script writing, I examined how his films influence emotions, character development, and contemporary youth culture. By analyzing works such as The Grand Budapest Hotel, Fantastic Mr. Fox, Moonrise Kingdom, and The Darjeeling Limited, the project connected film aesthetics with media, art, and social media trends while strengthening my understanding of creative storytelling and visual communication.'
+justification: 'This project explores how visual design, color theory, and filmmaking techniques influence emotions, storytelling, and modern culture. I chose this topic because of my interest in visual communication and Wes Anderson’s unique filmmaking style. Originally planned as a written article, the project was later transformed into a podcast, allowing me to present my research in a more engaging format. By examining Anderson’s creative use of color and visual storytelling, the project highlights the importance of film techniques in shaping audience experiences, classroom learning, and social media trends. It also aims to encourage students and audiences to better appreciate the artistic value of filmmaking and explore creative approaches to visual storytelling.'
+outcomesLead: 'This project strengthened my research, writing, and digital communication skills by teaching me how to transform academic research into an engaging podcast. It improved my ability to gather reliable information, organize ideas, write effective scripts, and present complex topics in a clear and creative way. Through this work, I gained a deeper understanding of film aesthetics, visual storytelling, color theory, and the influence of media on youth culture and social media trends. The project also enhanced my critical thinking by encouraging me to connect film concepts with real-world communication and audience engagement. Overall, this experience made me a more creative, adaptable, and confident media communicator, capable of producing meaningful content across both written and audio platforms while applying strong research and storytelling techniques.'
+outcomes: []
+pdf: 'wes-anderson-in-colour.pdf'
+---

@@ -1,0 +1,23 @@
+---
+slug: 'illusory-perception'
+number: '11'
+title: 'Illusory Perception'
+titleBn: 'অমূলপ্রত্যক্ষ'
+subtitle: 'অমূলপ্রত্যক্ষ (Illusory Perception): a symbolic video art piece on fake news and media manipulation'
+course: 'Convergence Communication 2'
+courseCode: 'MSJ 2202'
+semester: 'Spring 2025'
+chapter: 'V'
+cardMeta: 'MSJ 2202 · Convergence 2 · Spring 2025'
+listFormat: 'Video Art · 2025'
+format: 'Video art'
+role: 'Individual'
+summary: 'A symbolic video piece shot in Keraniganj on a smartphone, staging the conflict between truth and manufactured belief.'
+description: 'For the Spring 2025 semester, I completed an individual video art project titled "অমূলপ্রত্যক্ষ" (Illusory Perception) for MSJ2202: Convergence Communication 2 at the University of Liberal Arts Bangladesh (ULAB). The project used symbolic visual storytelling, camera techniques, lighting, and sound to explore the impact of fake news and media manipulation. Through carefully designed scenes and symbolic objects, the video illustrated the conflict between truth and misinformation and how false information can shape public perception. Filmed in Keraniganj using a smartphone, the project combined creative filmmaking with visual communication to raise awareness about propaganda, misinformation, and the importance of critical thinking in today''s digital media environment.'
+justification: 'This project explores the growing impact of fake news, misinformation, and media manipulation on society. I chose this topic because I wanted to examine how visual storytelling can reveal the hidden psychological and social effects of false information. Using simple visual symbols to represent truth and deception, the project encourages viewers to think critically about the media they consume and share. It highlights the importance of media literacy, critical thinking, and responsible information sharing in the digital age. Through this work, I hope to raise awareness about the dangers of misinformation and inspire media students and audiences to use creative communication to question propaganda and promote truthful, ethical media practices.'
+outcomesLead: 'This project strengthened my visual storytelling and media production skills by teaching me how to plan, organize, and execute a complete video art project. It improved my ability to develop creative concepts, prepare scene plans, and communicate complex social issues through symbolic visual techniques. Throughout the project, I gained practical experience in screenplay, filming, lighting, camera operation, editing, and visual composition while deepening my understanding of convergence communication and media manipulation. The project also enhanced my critical thinking and analytical skills by helping me interpret visual symbols and connect them with broader themes such as misinformation, propaganda, and media literacy. Overall, this experience made me a more creative, independent, and socially responsible media communicator capable of producing meaningful visual content that encourages critical thinking and public awareness.'
+outcomes: []
+heroImage: 'illusory-perception'
+imageAlt: 'A still from Illusory Perception, staging the conflict between truth and manufactured belief.'
+pdf: 'illusory-perception.pdf'
+---

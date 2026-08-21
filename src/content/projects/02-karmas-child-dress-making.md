@@ -1,0 +1,20 @@
+---
+slug: 'karmas-child-dress-making'
+number: '02'
+title: 'Karma''s Child: Dress Making'
+subtitle: 'Dress Making: the Karma''s Child group project on ecosystem restoration through sustainable fashion'
+course: 'Convergence Communication 1'
+courseCode: 'MSJ 2102'
+semester: 'Fall 2023'
+chapter: 'I'
+cardMeta: 'MSJ 2102 · Convergence 1 · Fall 2023'
+listFormat: 'Wearable Art · 2023'
+format: 'Wearable art and live exhibition'
+role: 'Member of the Karma''s Child group'
+summary: 'Three costumes built from recycled materials and shown as a live exhibition, turning plastic waste into wearable argument about ecosystem restoration.'
+description: 'During the Fall 2023 semester, I worked as a member of the "Karma''s Child" group for MSJ2102: Convergence Communication 1 at the University of Liberal Arts Bangladesh (ULAB). Our project, "Dress Making," promoted ecosystem restoration through sustainable fashion and wearable art created from recycled materials. We designed three costumes to illustrate the harmful effects of plastic pollution, environmental degradation, and related health issues. Using creative fashion design, a live exhibition, qualitative observation, and audience interviews, we explored how art can communicate environmental messages effectively. The project demonstrated how recycled materials can be transformed into meaningful creative works that raise public awareness and encourage sustainable practices to protect the environment.'
+justification: 'This project addresses the growing problem of environmental pollution caused by plastic waste, poor waste management, and unsustainable human activities. I chose this topic because I wanted to explore how creative fashion and visual storytelling can raise awareness about environmental protection. By transforming recycled materials into wearable art, the project highlights the harmful effects of pollution while encouraging people to adopt more sustainable habits. It demonstrates how creative communication can inspire positive social change and promote environmental responsibility. Through this work, I hope to encourage individuals, communities, and future communication projects to use art and creativity as effective tools for protecting nature and building a more sustainable future.'
+outcomesLead: 'This project strengthened my research, communication, and creative problem-solving skills by teaching me how to develop a communication concept, organize project activities, and evaluate audience responses. It improved my understanding of the research process, from planning and material collection to exhibition design and feedback analysis. Through this work, I gained deeper knowledge of ecosystem restoration, plastic pollution, sustainable fashion, and the role of convergence media in environmental communication. The project also enhanced my practical skills in creating designs from recycled materials, conducting interviews, and analyzing public opinions. By connecting creative ideas with real social issues, I developed stronger critical thinking, teamwork, and analytical abilities. Overall, this experience helped me become a more creative, responsible, and socially conscious media communicator capable of promoting environmental awareness through innovative visual communication.'
+outcomes: []
+pdf: 'karmas-child-dress-making.pdf'
+---

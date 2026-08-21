@@ -1,0 +1,20 @@
+---
+slug: 'an-old-age-homes-story'
+number: '08'
+title: 'An Old Age Homes Story'
+subtitle: 'An Old Age Homes Story: a feature blog reported at Apon Nibash Old Age Home'
+course: 'Communication Technology'
+courseCode: 'MSJ 2101'
+semester: 'Summer 2023'
+chapter: 'III'
+cardMeta: 'MSJ 2101 · Communication Technology · Summer 2023'
+listFormat: 'Blog · 2023'
+format: 'Feature blog'
+role: 'Individual'
+summary: 'A feature blog on abandoned elderly people in Bangladesh, reported at Apon Nibash Old Age Home through photojournalism and digital storytelling.'
+description: 'As part of my undergraduate Communication and Technology coursework at the University of Liberal Arts Bangladesh (ULAB), I created a feature blog titled "An Old Age Homes Story." The project explored the lives of abandoned elderly people in Bangladesh, with a focus on Apon Nibash Old Age Home and the challenges faced by elderly care institutions. Using qualitative digital storytelling, photojournalism, and secondary research, I examined the social and economic causes of elderly abandonment, the facilities provided by old age homes, and the financial and healthcare difficulties they experience. This project aimed to raise public awareness, promote empathy, and encourage greater support from the government, private organizations, and society to improve the well-being of senior citizens.'
+justification: 'This project focuses on the growing problem of elderly abandonment in Bangladesh, caused by changing family structures, financial difficulties, and shifting social values. I chose this topic because I believe journalism should highlight important social issues and give a voice to vulnerable people. Through this project, I explored the challenges faced by both elderly residents and the care homes that support them, including financial shortages and limited resources. The project aims to raise public awareness about the need to protect and support senior citizens while encouraging government agencies, private organizations, and the community to provide greater financial and social support for old age homes.'
+outcomesLead: 'This project strengthened my research, writing, and storytelling skills by teaching me how to organize a feature story, develop clear objectives, and present complex social issues through qualitative research. It improved my ability to collect background information, analyze real-life situations, and combine written content with visual storytelling to create meaningful social journalism. Through this work, I gained a deeper understanding of elderly abandonment, the challenges faced by old age homes, and the importance of humanitarian journalism in raising public awareness. The project also enhanced my critical thinking and analytical skills by encouraging me to examine the social, economic, and emotional factors affecting older adults. Overall, this experience helped me become a more responsible, empathetic, and skilled media communicator who can produce impactful stories that inspire awareness, encourage social responsibility, and support positive change.'
+outcomes: []
+pdf: 'an-old-age-homes-story.pdf'
+---

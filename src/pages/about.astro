@@ -1,0 +1,113 @@
+---
+// Artboard 08. Mobile derives from the rules established in 02.
+import Base from '../layouts/Base.astro';
+import Frame from '../components/Frame.astro';
+import Placeholder from '../components/Placeholder.astro';
+
+const objectives = [
+  'Demonstrate the knowledge and skills I have acquired.',
+  'Showcase my creativity and innovative thinking.',
+  'Apply and strengthen effective communication practices.',
+  'Identify real-world challenges and develop practical solutions.',
+  'Enhance both my technical and interpersonal skills.',
+  'Evaluate and improve my research and communication competencies.',
+];
+
+const subjects = [
+  'Ethical storytelling',
+  'Student and adolescent mental health',
+  'Elderly abandonment',
+  'Air pollution and environmental art',
+  'Colour and visual media',
+  'Recycled-fashion activism',
+  'Misinformation',
+  'Gender-based violence communication',
+  'Participatory rural research',
+  'ICT for development',
+  'Emergency communication',
+  'Child labour and media silence',
+  'Digital journalism and audience gatekeeping',
+];
+---
+
+<Base
+  title="About"
+  description="Shafrin Akter Chowdhury studies Media Studies and Journalism at ULAB, majoring in Communication for Development."
+>
+  <section class="wrap about-hero">
+    <div class="about-hero__copy">
+      <p class="kicker">§ About</p>
+      <h1 class="display">I wanted to be a<br /><em class="pink">journalist first.</em></h1>
+      <p>
+        From an early age I have aspired to build a career in journalism. In 2022 I enrolled in the
+        Department of Media Studies and Journalism at the University of Liberal Arts Bangladesh to
+        pursue that ambition, and I major in Communication for Development.
+      </p>
+    </div>
+
+    <Frame class="about-hero__portrait" offset={16}>
+      <Placeholder label="Portrait placeholder" note="Photograph to be supplied." markSize={30} />
+    </Frame>
+  </section>
+
+  <section class="wrap side-block" aria-labelledby="self-reflection">
+    <h2 class="kicker side-block__label" id="self-reflection">Self-reflection</h2>
+    <div class="side-block__body">
+      <p>
+        Throughout my academic journey I have developed a deeper understanding of journalism, mass
+        communication and the development sector while continuously improving my knowledge and
+        skills. My studies have also strengthened my awareness of social issues and the importance
+        of addressing inequality and injustice for the betterment of society. That perspective is
+        why so many of my academic projects and assignments start from a real-world social challenge
+        rather than a brief.
+      </p>
+      <blockquote>
+        “Studying at ULAB has transformed the way I think, enabling me to analyze issues more
+        critically and recognize multiple perspectives beyond what is immediately visible.”
+      </blockquote>
+      <p>
+        Embracing ULAB's liberal education philosophy has contributed significantly to my personal
+        growth, critical thinking and professional development. This portfolio brings together the
+        knowledge, skills and experiences I gained since 2022, across the department's common
+        courses and the Communication for Development track.
+      </p>
+    </div>
+  </section>
+
+  <section class="band band--wash band--96" style="margin-top: 110px;" aria-labelledby="objectives">
+    <div class="wrap">
+      <div class="chapter__head">
+        <h2 id="objectives" style="display: flex; align-items: baseline; gap: 20px;">
+          <span class="kicker kicker--oxblood">§ Objectives</span>
+          <span class="section-note">What this portfolio is for.</span>
+        </h2>
+      </div>
+
+      <div class="objectives">
+        <ol start="1">
+          {objectives.slice(0, 3).map((item, i) => (
+            <li>
+              <span class="n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <span class="b">{item}</span>
+            </li>
+          ))}
+        </ol>
+        <ol start="4">
+          {objectives.slice(3).map((item, i) => (
+            <li>
+              <span class="n" aria-hidden="true">{String(i + 4).padStart(2, '0')}</span>
+              <span class="b">{item}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap side-block" aria-labelledby="subjects">
+    <h2 class="kicker side-block__label" id="subjects">Subjects</h2>
+    <ul class="subjects">
+      {subjects.map((subject) => <li>{subject}</li>)}
+    </ul>
+  </section>
+</Base>

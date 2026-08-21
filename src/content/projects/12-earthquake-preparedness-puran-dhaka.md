@@ -1,0 +1,22 @@
+---
+slug: 'earthquake-preparedness-puran-dhaka'
+number: '12'
+title: 'Earthquake Preparedness, Puran Dhaka'
+subtitle: 'Earthquake Preparedness and Response in Puran Dhaka, Bangladesh'
+course: 'Emergency Communication'
+courseCode: 'MSJ 3263'
+semester: 'Fall 2025'
+chapter: 'V'
+cardMeta: 'MSJ 3263 · Emergency Communication · Fall 2025'
+listFormat: 'Multimedia · 2025'
+format: 'Multimedia story and communication plan'
+role: 'Group project'
+summary: 'Safety messages, audience mapping and coordination plans built on RCCE and Sphere standards for a dense, fragile old city.'
+description: 'During the Fall 2025 semester, I completed a group project for MSJ 3263: Emergency Communication at the University of Liberal Arts Bangladesh (ULAB). Our project, “Earthquake Preparedness and Response in Puran Dhaka, Bangladesh,” developed a comprehensive emergency communication plan to improve disaster preparedness, response, and recovery. The study focused on the high earthquake risk in Puran Dhaka due to its old infrastructure, narrow roads, and densely populated neighborhoods. Using international frameworks such as Risk Communication and Community Engagement (RCCE) and the Sphere Humanitarian Standards, we designed communication strategies, safety messages, and coordination plans for different audiences. The project provides a practical framework to help government agencies, NGOs, and local communities reduce disaster risks, improve emergency communication, and strengthen public preparedness.'
+justification: 'This project focuses on improving earthquake preparedness and emergency communication in Puran Dhaka, one of the most earthquake-vulnerable areas in Bangladesh. I chose this topic because earthquakes occur without warning, making public awareness and effective communication essential for saving lives. The project highlights the risks created by old buildings, overcrowded neighborhoods, and limited public knowledge of disaster preparedness. It proposes a practical communication strategy that uses community volunteers, mosque loudspeakers, SMS alerts, and other communication channels to reduce panic, share accurate information, and support coordinated emergency response. Through this work, I hope to strengthen community resilience and encourage better disaster preparedness in vulnerable urban communities.'
+outcomesLead: 'This project strengthened my research, planning, and emergency communication skills by teaching me how to develop a comprehensive communication plan for disaster preparedness, response, and recovery. It improved my ability to assess disaster risks, identify vulnerable groups, set SMART communication objectives, and design practical communication materials for emergency situations. Through this work, I gained a deeper understanding of crisis communication frameworks, risk communication, community engagement, and ethical communication principles. The project also enhanced my critical thinking by helping me analyze how fear, rumors, and misinformation influence public behavior during disasters and how trusted community communication can reduce panic. Overall, this experience made me a more confident, responsible, and socially aware communication professional, capable of designing inclusive and evidence-based emergency communication strategies that strengthen community resilience and disaster preparedness.'
+outcomes: []
+heroImage: 'earthquake-puran-dhaka'
+imageAlt: 'A dense street of old buildings in Puran Dhaka, the area the preparedness plan addresses.'
+pdf: 'earthquake-preparedness-puran-dhaka.pdf'
+---

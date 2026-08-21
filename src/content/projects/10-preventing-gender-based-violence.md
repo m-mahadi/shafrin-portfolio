@@ -1,0 +1,20 @@
+---
+slug: 'preventing-gender-based-violence'
+number: '10'
+title: 'Preventing Gender-Based Violence'
+subtitle: 'A Monitoring and Evaluation plan for a Communication for Development initiative to prevent gender-based violence in urban low-income communities'
+course: 'C4D Planning and Process'
+courseCode: 'MSJ 2262'
+semester: 'Fall 2025'
+chapter: 'IV'
+cardMeta: 'MSJ 2262 · C4D Planning and Process · Fall 2025'
+listFormat: 'M&E Plan · 2025'
+format: 'Monitoring and evaluation plan'
+role: 'Team project'
+summary: 'A monitoring and evaluation plan for a C4D initiative in low-income urban communities: root cause analysis, problem tree, logic model and evaluation matrix.'
+description: 'During the Fall 2025 semester, my team and I completed a final project for MSJ 2262: C4D Planning and Process at the University of Liberal Arts Bangladesh (ULAB). We developed a comprehensive Monitoring and Evaluation (M&E) plan for a Communication for Development (C4D) initiative aimed at preventing gender-based violence in urban low-income communities in Bangladesh. The project included tools such as a Root Cause Analysis, Problem Tree, Program Logic Model, Monitoring Matrix, and Evaluation Matrix. Using a theory-based mixed-method approach and secondary research, we designed a practical framework to measure changes in knowledge, attitudes, and behaviors related to gender-based violence. The project provides a community-focused communication strategy to support survivors, promote social change, and strengthen violence prevention efforts.'
+justification: 'This project focuses on addressing gender-based violence in Bangladesh, particularly among women living in low-income urban communities. I chose this topic because I believe effective communication is essential for changing harmful social norms, promoting gender equality, and encouraging positive behavior. The project explores how gender inequality, financial dependence, and social stigma prevent many survivors from seeking help despite existing legal protections. It emphasizes the importance of careful communication planning, monitoring, and evaluation to ensure that awareness campaigns create meaningful and lasting social change. Through this work, I hope to support the development of safer, more effective communication strategies that empower survivors, encourage positive community attitudes, and strengthen efforts to prevent gender-based violence.'
+outcomesLead: 'This project strengthened my research, planning, and development communication skills by teaching me how to design a comprehensive Monitoring and Evaluation (M&E) framework for a Communication for Development (C4D) initiative. It improved my understanding of project planning, results-based management, and the use of monitoring and evaluation throughout the project cycle. Through this work, I gained deeper knowledge of gender-based violence, social behavior change, and the role of communication in promoting gender equality and community participation. The project also enhanced my practical skills in developing data collection tools, creating planning frameworks such as the Fishbone Diagram, Problem Tree, and Program Logic Model, and analyzing social issues using evidence-based approaches. Overall, this experience made me a more confident, ethical, and socially responsible communication planner, capable of designing effective development projects that support meaningful and sustainable social change.'
+outcomes: []
+pdf: 'preventing-gender-based-violence.pdf'
+---

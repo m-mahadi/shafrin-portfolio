@@ -1,0 +1,23 @@
+---
+slug: 'safe-air'
+number: '01'
+title: 'Safe Air'
+subtitle: 'Safe Air: a visual communication project on air pollution and public health'
+course: 'Mass Communication'
+courseCode: 'MSJ 2202'
+semester: 'Fall 2023'
+chapter: 'I'
+cardMeta: 'MSJ 2202 · Mass Communication · Fall 2023'
+listFormat: 'Mask + Report · 2023'
+format: 'Mask and visual report'
+role: 'Group project with one teammate'
+summary: 'Mask making, acrylic painting and a written report on air pollution. A split-mask sets factory emissions, cigarette smoke and brick kilns against trees, clean air and green space, arguing for the public-health case through art rather than statistics.'
+homeSummary: 'A split-mask painting that sets factory emissions, cigarette smoke and brick kilns against trees, clean air and green space. Art used as a public-health argument.'
+description: 'During the Fall 2023 semester, I completed a group project for Mass Communication (MSJ 2202) at the University of Liberal Arts Bangladesh (ULAB). Together with my teammate, we created an artistic visual communication project titled "Safe Air." The project combined mask making, acrylic painting, visual design, and a written report to raise awareness about air pollution and environmental protection. Through a split-mask concept, we contrasted the harmful effects of factory emissions, cigarette smoke, and brick kilns with the benefits of clean air, trees, and green spaces. By integrating creative artwork with qualitative observations on environmental and public health issues, the project promoted sustainable practices and encouraged greater public awareness about protecting air quality.'
+justification: 'This project focuses on raising awareness about air pollution and its harmful effects on human health and the environment. I chose this topic because clean air is essential for a healthy life, yet pollution from factories, vehicles, brick kilns, and tobacco smoke continues to threaten public well-being. Using visual art as a communication tool, the project highlights the contrast between polluted and healthy environments while encouraging positive environmental action. It aims to inspire individuals to adopt healthier habits, promote tree planting, reduce smoking, and encourage stronger environmental policies. Through this work, I hope to demonstrate how creative visual communication can educate the public and encourage greater responsibility for protecting the environment.'
+outcomesLead: 'This project strengthened my research, visual communication, and creative design skills by teaching me how to develop a communication concept and present environmental issues through artistic expression. It improved my ability to plan projects, organize visual objectives, prepare academic reports, and transform ideas into meaningful visual messages. Through this work, I gained a deeper understanding of mass communication, environmental protection, air pollution, and the use of visual symbols to influence public awareness and behavior. The project also enhanced my practical skills in mask making, acrylic painting, color composition, teamwork, and creative problem-solving. Overall, this experience made me a more creative, responsible, and environmentally conscious media communicator, capable of using visual art to promote social awareness and encourage positive environmental action.'
+outcomes: []
+heroImage: 'safe-air'
+imageAlt: 'The Safe Air mask: one half painted with factory chimneys and smoke, the other with trees and open sky.'
+pdf: 'safe-air.pdf'
+---

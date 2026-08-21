@@ -1,0 +1,20 @@
+---
+slug: 'breaking-the-silence'
+number: '05'
+title: 'Breaking the Silence'
+subtitle: 'Breaking the Silence: A Communication Intervention Plan to Address Adolescent Mental Health in Bangladesh'
+course: 'Health Communication'
+courseCode: 'MSJ 3262'
+semester: 'Spring 2025'
+chapter: 'II'
+cardMeta: 'MSJ 3262 · Health Communication · Spring 2025'
+listFormat: 'Health Campaign · 2025'
+format: 'Health communication campaign'
+role: 'Individual'
+summary: 'A communication intervention plan for adolescent mental health in Bangladesh: SMART objectives, a multi-channel strategy for students aged 10 to 18, school workshops and social campaigns aimed at depression, anxiety and the stigma that keeps them unspoken.'
+description: 'For MSJ 3262: Health Communication at the University of Liberal Arts Bangladesh (ULAB), I developed a health communication intervention plan titled “Breaking the Silence: A Communication Intervention Plan to Address Adolescent Mental Health in Bangladesh.” The project focused on raising awareness of depression and anxiety among adolescents, reducing mental health stigma, and encouraging early recognition of stress-related symptoms. Using secondary research and a systematic health communication planning process, I designed SMART objectives and a multi-channel communication strategy targeting students aged 10 to 18. The project proposed mental health workshops and social media awareness campaigns for schools, providing a practical framework that can support educators, NGOs, and policymakers in promoting adolescent mental well-being across Bangladesh.'
+justification: 'This project focuses on addressing adolescent mental health in Bangladesh by raising awareness of depression, anxiety, and the importance of early support. I chose this topic because academic pressure, social stigma, and limited access to mental health services prevent many students from seeking help. The project emphasizes the role of communication in reducing stigma, encouraging open discussions, and promoting positive mental health among young people. It proposes a culturally appropriate communication strategy that supports collaboration among schools, parents, media, and community organizations. Through this work, I hope to contribute to improving mental health awareness, encouraging early intervention, and creating a more supportive environment for adolescents across Bangladesh.'
+outcomesLead: 'This project strengthened my research, planning, and health communication skills by teaching me how to develop a comprehensive communication intervention plan for a public health issue. It improved my ability to conduct audience analysis, set SMART objectives, design communication strategies, and prepare monitoring and evaluation plans. Through this work, I gained a deeper understanding of adolescent mental health, behavior change theories, and the role of communication in reducing stigma and promoting positive health behaviors. The project also enhanced my critical thinking by helping me analyze cultural, social, and gender-related factors that influence mental health awareness and help-seeking behavior. Overall, this experience made me a more confident and responsible communication planner, capable of designing evidence-based, culturally appropriate health communication campaigns that support meaningful and sustainable behavior change.'
+outcomes: []
+pdf: 'breaking-the-silence.pdf'
+---

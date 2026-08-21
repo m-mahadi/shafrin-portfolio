@@ -1,0 +1,342 @@
+---
+// The centrepiece of the project and internship pages, built once.
+// Desktop chrome is artboard 06; mobile chrome is artboard 07.
+// Page counts are rendered server-side so the chrome is right before JS boots,
+// and the whole thing degrades to a plain download link with no JS at all.
+import type { PdfInfo } from '../lib/pdf';
+
+interface Props {
+  pdf: PdfInfo | null;
+  /** Shown in the toolbar when no file has been supplied yet. */
+  fallbackName: string;
+  slotNote: string;
+  label: string;
+}
+const { pdf, fallbackName, slotNote, label } = Astro.props;
+// Artboard 10 draws the empty rail with five numbered plates and a trailing
+// dash, so the chrome reads the same before a file is attached.
+const railPages = Array.from({ length: pdf ? Math.min(pdf.pages, 5) : 5 }, (_, i) => i + 1);
+---
+
+<div class="viewer" data-pdf={pdf?.href} data-pages={pdf?.pages}>
+  <div class="frame__shadow" aria-hidden="true"></div>
+
+  <section class="viewer__shell" aria-label={label}>
+    <div class="viewer__bar">
+      <p class="viewer__file">
+        <svg width="15" height="19" viewBox="0 0 15 19" aria-hidden="true" focusable="false">
+          <path d="M1 1h8l5 5v12H1z" fill="none" stroke="var(--color-pink)" stroke-width="1.2"></path>
+          <path d="M9 1v5h5" fill="none" stroke="var(--color-pink)" stroke-width="1.2"></path>
+        </svg>
+        <span>{pdf ? pdf.name : fallbackName}</span>
+      </p>
+
+      <div class="viewer__pager">
+        <button type="button" data-page-prev disabled aria-label="Previous page">
+          <svg width="8" height="12" viewBox="0 0 8 12" aria-hidden="true" focusable="false">
+            <path d="M7 1L2 6l5 5" fill="none" stroke="currentColor" stroke-width="1.3"></path>
+          </svg>
+        </button>
+        <span class="viewer__count" data-page-count aria-live="polite">
+          {pdf ? `1 / ${pdf.pages}` : '– / –'}
+        </span>
+        <button type="button" data-page-next disabled aria-label="Next page">
+          <svg width="8" height="12" viewBox="0 0 8 12" aria-hidden="true" focusable="false">
+            <path d="M1 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.3"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div class="viewer__tools">
+        <div class="viewer__zoom">
+          <button type="button" data-zoom-out aria-label="Zoom out">−</button>
+          <span data-zoom-value>100%</span>
+          <button type="button" data-zoom-in aria-label="Zoom in">+</button>
+        </div>
+        {pdf ? (
+          <>
+            <a class="viewer__open" href={pdf.href} target="_blank" rel="noopener">Open ↗</a>
+            <a class="viewer__download" href={pdf.href} download>Download ↓</a>
+          </>
+        ) : (
+          <>
+            <span class="viewer__open" aria-hidden="true">Open ↗</span>
+            <span class="viewer__download" aria-hidden="true">Download ↓</span>
+          </>
+        )}
+      </div>
+    </div>
+
+    <div class="viewer__body">
+      <div class="viewer__rail" data-rail aria-hidden="true">
+        {railPages.map((n) => (
+          <div class="viewer__thumb" data-thumb={n} aria-current={n === 1 ? 'true' : 'false'}>
+            <div class="shape"></div>
+            <span>{n}</span>
+          </div>
+        ))}
+        {pdf ? pdf.pages > 5 && <p class="more">… {pdf.pages}</p> : <p class="more">—</p>}
+      </div>
+
+      <div class="viewer__stage" data-stage>
+        {pdf ? (
+          <div class="viewer__page" data-page hidden></div>
+        ) : (
+          <div class="viewer__slot">
+            <svg width="26" height="32" viewBox="0 0 15 19" aria-hidden="true" focusable="false">
+              <path d="M1 1h8l5 5v12H1z" fill="none" stroke="var(--color-pink)" stroke-width="1.1"></path>
+              <path d="M9 1v5h5" fill="none" stroke="var(--color-pink)" stroke-width="1.1"></path>
+            </svg>
+            <strong>PDF slot</strong>
+            <p>{slotNote}</p>
+          </div>
+        )}
+
+        {pdf && (
+          <div class="viewer__overlay" data-overlay data-state="loading">
+            <div class="track"><span class="bar" data-overlay-bar></span></div>
+            <strong data-overlay-title>Loading report, 0%</strong>
+            <p data-overlay-note>First page renders as soon as it arrives; the rest streams in behind it.</p>
+          </div>
+        )}
+      </div>
+    </div>
+
+    {pdf && (
+      <div class="viewer__mobile">
+        <div class="viewer__mobile-pager">
+          <button type="button" data-page-prev disabled aria-label="Previous page">‹</button>
+          <span class="count" data-page-count>1 / {pdf.pages}</span>
+          <button type="button" data-page-next disabled aria-label="Next page">›</button>
+        </div>
+        <label class="visually-hidden" for={`scrub-${pdf.name}`}>Jump to page</label>
+        <input
+          class="viewer__scrub"
+          id={`scrub-${pdf.name}`}
+          type="range"
+          min="1"
+          max={pdf.pages}
+          value="1"
+          step="1"
+          data-scrub
+        />
+        <div class="viewer__mobile-actions">
+          <a href={pdf.href} download>Download ↓</a>
+          <a href={pdf.href} target="_blank" rel="noopener">Open ↗</a>
+        </div>
+      </div>
+    )}
+
+    <div class="viewer__status">
+      <span data-status>{pdf ? `Page 1 of ${pdf.pages} · fit width` : 'Awaiting file · PDF slot'}</span>
+      <span class="viewer__progress">
+        <span class="track"><span class="bar" data-progress></span></span>
+        <span data-progress-value>{pdf ? '0%' : '–'}</span>
+      </span>
+    </div>
+
+    {pdf && (
+      <p class="viewer__nojs">
+        JavaScript is off, so the reader is not running.
+        <a href={pdf.href} download>Download the PDF ↓</a>
+        <a href={pdf.href} target="_blank" rel="noopener">Open in new tab ↗</a>
+      </p>
+    )}
+  </section>
+</div>
+
+{pdf && (
+  <p class="viewer__hint">
+    Pinch to zoom, swipe sideways to turn pages. If the embedded viewer is blocked, the two
+    buttons still work.
+  </p>
+)}
+
+<script>
+  // pdf.js is only fetched when a document is actually attached, so pages that
+  // are still showing the empty PDF slot cost nothing.
+  type PdfJs = typeof import('pdfjs-dist/build/pdf.mjs');
+  let pdfjs: PdfJs;
+
+  function setup(root: HTMLElement) {
+    const src = root.dataset.pdf;
+    const stage = root.querySelector<HTMLElement>('[data-stage]');
+    const pageBox = root.querySelector<HTMLElement>('[data-page]');
+    const overlay = root.querySelector<HTMLElement>('[data-overlay]');
+    return { src, stage, pageBox, overlay };
+  }
+
+  function showError(root: HTMLElement) {
+    const overlay = root.querySelector<HTMLElement>('[data-overlay]');
+    if (!overlay) return;
+    const href = root.dataset.pdf ?? '#';
+    overlay.dataset.state = 'error';
+    overlay.hidden = false;
+    overlay.innerHTML = `
+      <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true" focusable="false">
+        <circle cx="17" cy="17" r="12" fill="none" stroke="var(--color-pink)" stroke-width="1.2"></circle>
+        <path d="M17 10v9M17 23v1.4" fill="none" stroke="var(--color-pink)" stroke-width="1.4"></path>
+      </svg>
+      <strong>The report could not be displayed</strong>
+      <p>Your browser may be blocking the embedded viewer. The file itself is fine.</p>
+      <span class="viewer__escape">
+        <a href="${href}" download>Download ↓</a>
+        <a href="${href}" target="_blank" rel="noopener">Open in new tab ↗</a>
+      </span>`;
+    const status = root.querySelector<HTMLElement>('[data-status]');
+    if (status) status.textContent = 'Could not display. Download the file instead.';
+  }
+
+  async function boot(root: HTMLElement) {
+    const { src, stage, pageBox, overlay } = setup(root);
+    if (!src || !stage || !pageBox) return;
+
+    const totalFromServer = Number(root.dataset.pages ?? 0);
+    const counts = Array.from(root.querySelectorAll<HTMLElement>('[data-page-count]'));
+    const prevButtons = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-page-prev]'));
+    const nextButtons = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-page-next]'));
+    const scrub = root.querySelector<HTMLInputElement>('[data-scrub]');
+    const status = root.querySelector<HTMLElement>('[data-status]');
+    const progress = root.querySelector<HTMLElement>('[data-progress]');
+    const progressValue = root.querySelector<HTMLElement>('[data-progress-value]');
+    const overlayBar = root.querySelector<HTMLElement>('[data-overlay-bar]');
+    const overlayTitle = root.querySelector<HTMLElement>('[data-overlay-title]');
+    const zoomValue = root.querySelector<HTMLElement>('[data-zoom-value]');
+    const rail = root.querySelector<HTMLElement>('[data-rail]');
+
+    let doc: Awaited<ReturnType<PdfJs['getDocument']>['promise']> | null = null;
+    let current = 1;
+    let total = totalFromServer;
+    let zoom = 1;
+    let renderToken = 0;
+
+    const canvas = document.createElement('canvas');
+    pageBox.append(canvas);
+
+    function setStatus() {
+      counts.forEach((el) => (el.textContent = `${current} / ${total}`));
+      if (scrub) scrub.value = String(current);
+      prevButtons.forEach((b) => (b.disabled = current <= 1));
+      nextButtons.forEach((b) => (b.disabled = current >= total));
+      const pct = total > 0 ? Math.round((current / total) * 100) : 0;
+      if (progress) progress.style.width = `${pct}%`;
+      if (progressValue) progressValue.textContent = `${pct}%`;
+      if (status) {
+        status.textContent = `Page ${current} of ${total} · ${zoom === 1 ? 'fit width' : `${Math.round(zoom * 100)}%`}`;
+      }
+      if (zoomValue) zoomValue.textContent = `${Math.round(zoom * 100)}%`;
+      rail?.querySelectorAll<HTMLElement>('[data-thumb]').forEach((thumb) => {
+        thumb.setAttribute('aria-current', Number(thumb.dataset.thumb) === current ? 'true' : 'false');
+      });
+    }
+
+    async function render(pageNumber: number) {
+      if (!doc) return;
+      const token = ++renderToken;
+      const page = await doc.getPage(pageNumber);
+      if (token !== renderToken) return;
+      const base = page.getViewport({ scale: 1 });
+      const available = Math.max(240, stage!.clientWidth - 48);
+      const scale = (available / base.width) * zoom * Math.min(window.devicePixelRatio || 1, 2);
+      const viewport = page.getViewport({ scale });
+      const context = canvas.getContext('2d');
+      if (!context) return;
+      canvas.width = Math.floor(viewport.width);
+      canvas.height = Math.floor(viewport.height);
+      canvas.style.width = `${Math.floor(viewport.width / Math.min(window.devicePixelRatio || 1, 2))}px`;
+      await page.render({ canvas, canvasContext: context, viewport }).promise;
+      pageBox!.hidden = false;
+      if (overlay) overlay.hidden = true;
+      setStatus();
+    }
+
+    async function renderThumbs() {
+      if (!doc || !rail) return;
+      for (const thumb of Array.from(rail.querySelectorAll<HTMLElement>('[data-thumb]'))) {
+        const n = Number(thumb.dataset.thumb);
+        const shape = thumb.querySelector('.shape');
+        if (!shape || n > total) continue;
+        const page = await doc.getPage(n);
+        const base = page.getViewport({ scale: 1 });
+        const viewport = page.getViewport({ scale: 100 / base.height });
+        const c = document.createElement('canvas');
+        c.width = Math.floor(viewport.width);
+        c.height = Math.floor(viewport.height);
+        const ctx = c.getContext('2d');
+        if (!ctx) continue;
+        await page.render({ canvas: c, canvasContext: ctx, viewport }).promise;
+        shape.replaceChildren(c);
+      }
+    }
+
+    function go(to: number) {
+      const next = Math.min(Math.max(1, to), total);
+      if (next === current) return;
+      current = next;
+      setStatus();
+      void render(current);
+    }
+
+    prevButtons.forEach((b) => b.addEventListener('click', () => go(current - 1)));
+    nextButtons.forEach((b) => b.addEventListener('click', () => go(current + 1)));
+    scrub?.addEventListener('input', () => go(Number(scrub.value)));
+    root.querySelector('[data-zoom-in]')?.addEventListener('click', () => {
+      zoom = Math.min(2.5, zoom + 0.25);
+      void render(current);
+    });
+    root.querySelector('[data-zoom-out]')?.addEventListener('click', () => {
+      zoom = Math.max(0.5, zoom - 0.25);
+      void render(current);
+    });
+
+    // Horizontal swipe turns pages on touch.
+    let startX = 0;
+    let startY = 0;
+    let touches = 0;
+    stage.addEventListener('touchstart', (event) => {
+      touches = event.touches.length;
+      startX = event.touches[0].clientX;
+      startY = event.touches[0].clientY;
+    }, { passive: true });
+    stage.addEventListener('touchend', (event) => {
+      if (touches !== 1) return;
+      const touch = event.changedTouches[0];
+      const dx = touch.clientX - startX;
+      const dy = touch.clientY - startY;
+      if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) go(current + (dx < 0 ? 1 : -1));
+    }, { passive: true });
+
+    let resizeTimer: number | undefined;
+    window.addEventListener('resize', () => {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => void render(current), 150);
+    });
+
+    try {
+      const task = pdfjs.getDocument({ url: src });
+      task.onProgress = ({ loaded, total: bytes }: { loaded: number; total: number }) => {
+        if (!bytes) return;
+        const pct = Math.min(100, Math.round((loaded / bytes) * 100));
+        if (overlayBar) overlayBar.style.width = `${pct}%`;
+        if (overlayTitle) overlayTitle.textContent = `Loading report, ${pct}%`;
+      };
+      doc = await task.promise;
+      total = doc.numPages;
+      setStatus();
+      await render(1);
+      void renderThumbs();
+    } catch {
+      showError(root);
+    }
+  }
+
+  const viewers = Array.from(document.querySelectorAll<HTMLElement>('.viewer[data-pdf]'));
+  if (viewers.length > 0) {
+    void (async () => {
+      pdfjs = await import('pdfjs-dist/build/pdf.mjs');
+      const workerUrl = (await import('pdfjs-dist/build/pdf.worker.min.mjs?url')).default;
+      pdfjs.GlobalWorkerOptions.workerSrc = workerUrl;
+      viewers.forEach((root) => void boot(root));
+    })().catch(() => viewers.forEach((root) => showError(root)));
+  }
+</script>

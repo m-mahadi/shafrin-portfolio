@@ -1,0 +1,23 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+.astro/
+
+# local tooling / editor
+.mcp.json
+.vscode/
+.idea/
+.DS_Store
+
+# environment & secrets
+.env
+.env.*
+*.pem
+*.key
+
+# local-only working artifacts
+review/
+debug.log
+*.log

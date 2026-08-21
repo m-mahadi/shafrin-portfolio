@@ -1,0 +1,21 @@
+---
+slug: 'unique-creator-of-colours'
+number: '04'
+title: 'চলচ্চিত্রেকে এই অদ্বিতীয় রঙের স্রষ্টা'
+titleBn: 'চলচ্চিত্রেকে এই অদ্বিতীয় রঙের স্রষ্টা'
+subtitle: 'Who is this Unique Creator of Colors in Cinema? A research feature written in Bangla'
+course: 'Advance Bangla Writing Skills'
+courseCode: 'GEF 1203'
+semester: 'Summer 2023'
+chapter: 'I'
+cardMeta: 'GEF 1203 · Advance Bangla Writing · Summer 2023'
+listFormat: 'Bangla Feature · 2023'
+format: 'Bangla research feature'
+role: 'Individual'
+summary: 'The same subject written in Bangla as a research feature, so that film studies and colour theory reach readers the English version would miss.'
+description: 'As part of my coursework for GEF1203: Advance Bangla Writing Skills at the University of Liberal Arts Bangladesh (ULAB), I completed a research-based portfolio project titled "চলচ্চিত্রেকে এই অদ্বিতীয় রঙের স্রষ্টা" (Who is this Unique Creator of Colors in Cinema?). The project explored the artistic style of filmmaker Wes Anderson, focusing on his use of color theory, visual composition, and emotional storytelling. Using qualitative media analysis, narrative writing, and secondary research, I examined how his distinctive filmmaking techniques influence audience emotions, digital culture, and youth trends. By analyzing several of his films and relevant academic sources, the project connected film aesthetics with modern media, visual communication, and cultural expression while strengthening my Bangla academic writing and analytical skills.'
+justification: 'This project explores the role of visual design and color theory in film storytelling and emotional expression. I chose this topic because of my interest in art, visual media, and Wes Anderson’s unique filmmaking style, which demonstrates how color can become a powerful storytelling tool. The project examines how his creative use of color influences audience emotions, youth culture, social media trends, and even product design. By presenting these ideas in Bangla, the project aims to make film studies more accessible and encourage students, young readers, and content creators to better understand the importance of visual storytelling, creativity, and the impact of cinematic techniques beyond the world of cinema.'
+outcomesLead: 'This project strengthened my research, analytical, and Bangla academic writing skills by teaching me how to explain complex film concepts in a clear and engaging way. It improved my ability to conduct research, evaluate academic sources, and combine film analysis with observations about society and culture. Through this work, I gained a deeper understanding of color theory, visual composition, set design, and character symbolism, as well as their influence on audience emotions, youth culture, and digital media trends. The project also enhanced my critical thinking by helping me connect film aesthetics with modern communication, online communities, and creative industries. Overall, this experience made me a more thoughtful researcher, creative media writer, and skilled communicator capable of producing meaningful cultural and media analysis in Bangla.'
+outcomes: []
+pdf: 'unique-creator-of-colours.pdf'
+---
