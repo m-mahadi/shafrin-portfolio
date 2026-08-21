@@ -21,7 +21,19 @@ import { site } from '../lib/site';
       <dl class="channels">
         <div>
           <dt>Email</dt>
-          <dd><a href={`mailto:${site.email}`}>{site.email}</a></dd>
+          <dd class="channels__email-row">
+            <a href={`mailto:${site.email}`}>{site.email}</a>
+            <button
+              type="button"
+              class="copy-btn"
+              id="copy-email-btn"
+              data-email={site.email}
+              aria-label="Copy email address to clipboard"
+            >
+              <span id="copy-btn-text">Copy</span>
+            </button>
+            <span class="visually-hidden" id="copy-status" aria-live="polite"></span>
+          </dd>
         </div>
         <div>
           <dt>Blog</dt>
@@ -40,7 +52,7 @@ import { site } from '../lib/site';
 
     <div class="contact__form">
       <div class="frame__shadow" aria-hidden="true"></div>
-      <form action={`mailto:${site.email}`} method="post" enctype="text/plain">
+      <form id="contact-form" action={`mailto:${site.email}`} method="post" enctype="text/plain">
         <h2>Write to me</h2>
         <p>I reply to everything that is not a mailing list.</p>
 
@@ -60,10 +72,98 @@ import { site } from '../lib/site';
         </div>
 
         <div class="form-foot">
-          <button type="submit">Send message</button>
+          <button type="submit" id="contact-submit">Send message</button>
           <span>Usually a reply within a few days.</span>
         </div>
       </form>
     </div>
   </section>
+
+  <script>
+    // Copy email button with accessible announcement and robust fallback
+    const copyBtn = document.getElementById('copy-email-btn') as HTMLButtonElement | null;
+    const copyText = document.getElementById('copy-btn-text');
+    const copyStatus = document.getElementById('copy-status');
+
+    if (copyBtn && copyText && copyStatus) {
+      const email = copyBtn.dataset.email || '';
+      let resetTimer: number | undefined;
+
+      copyBtn.addEventListener('click', async () => {
+        let copied = false;
+        if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+          try {
+            await navigator.clipboard.writeText(email);
+            copied = true;
+          } catch {
+            copied = false;
+          }
+        }
+
+        if (!copied) {
+          try {
+            const textarea = document.createElement('textarea');
+            textarea.value = email;
+            textarea.setAttribute('readonly', '');
+            textarea.style.position = 'fixed';
+            textarea.style.left = '-9999px';
+            textarea.style.top = '-9999px';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.focus();
+            textarea.select();
+            copied = document.execCommand('copy');
+            document.body.removeChild(textarea);
+            copyBtn.focus();
+          } catch {
+            copied = false;
+          }
+        }
+
+        window.clearTimeout(resetTimer);
+
+        if (copied) {
+          copyText.textContent = 'Copied!';
+          copyBtn.setAttribute('data-copied', 'true');
+          copyStatus.textContent = 'Email address copied to clipboard.';
+          resetTimer = window.setTimeout(() => {
+            copyText.textContent = 'Copy';
+            copyBtn.removeAttribute('data-copied');
+            copyStatus.textContent = '';
+          }, 2000);
+        } else {
+          copyStatus.textContent = `Could not copy automatically. Email is ${email}`;
+        }
+      });
+    }
+
+    // Form submit: native validation & mailto URL construction with proper encoding
+    const form = document.getElementById('contact-form') as HTMLFormElement | null;
+    if (form) {
+      form.addEventListener('submit', (event) => {
+        if (!form.checkValidity()) {
+          form.reportValidity();
+          event.preventDefault();
+          return;
+        }
+
+        event.preventDefault();
+        const nameInput = form.querySelector<HTMLInputElement>('#name');
+        const emailInput = form.querySelector<HTMLInputElement>('#email');
+        const messageInput = form.querySelector<HTMLTextAreaElement>('#message');
+
+        const name = nameInput?.value.trim() || '';
+        const senderEmail = emailInput?.value.trim() || '';
+        const message = messageInput?.value.trim() || '';
+
+        const subject = `Portfolio message from ${name}`;
+        const body = `From: ${name} <${senderEmail}>\n\n${message}`;
+
+        const recipient = form.action.replace(/^mailto:/i, '').split('?')[0] || '';
+        const mailtoUrl = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+        window.location.href = mailtoUrl;
+      });
+    }
+  </script>
 </Base>

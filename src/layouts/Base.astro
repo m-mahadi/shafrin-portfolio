@@ -37,5 +37,49 @@ const fullTitle = path === '/' ? `${site.name} | ${site.tagline}` : `${title} | 
       <slot />
     </main>
     <SiteFooter />
+
+    <script>
+      // Subtle one-time viewport reveals for major editorial sections/cards
+      if (
+        'IntersectionObserver' in window &&
+        window.matchMedia('(prefers-reduced-motion: no-preference)').matches
+      ) {
+        const revealTargets = document.querySelectorAll<HTMLElement>(
+          '.hero, .feature, .feature-pair__a, .feature-pair__b, .index, .about-teaser, ' +
+          '.chapter, .plate-row, .pair__item, .two-up__item, .entry, ' +
+          '.about-hero, .side-block, .objectives, .subjects, ' +
+          '.activity, .lessons, .contact__copy, .contact__form, ' +
+          '.project-head, .project-hero, .prose__block, .report-band, .project-nav, .page-head'
+        );
+
+        if (revealTargets.length > 0) {
+          const observer = new IntersectionObserver(
+            (entries, obs) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add('is-revealed');
+                  obs.unobserve(entry.target);
+                }
+              });
+            },
+            {
+              root: null,
+              rootMargin: '0px 0px -20px 0px',
+              threshold: 0,
+            }
+          );
+
+          revealTargets.forEach((el) => {
+            el.setAttribute('data-reveal', '');
+            const rect = el.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+              el.classList.add('is-revealed');
+            } else {
+              observer.observe(el);
+            }
+          });
+        }
+      }
+    </script>
   </body>
 </html>

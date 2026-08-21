@@ -29,6 +29,7 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
         id="menu-open"
         aria-expanded="false"
         aria-controls="mobile-menu"
+        aria-label="Open menu"
       >
         Menu
         <svg width="20" height="12" viewBox="0 0 20 12" aria-hidden="true" focusable="false">
@@ -39,10 +40,10 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
   </div>
 </header>
 
-<div class="menu" id="mobile-menu" role="dialog" aria-modal="true" aria-label="Site menu" hidden>
+<div class="menu" id="mobile-menu" role="dialog" aria-modal="true" aria-label="Site menu" aria-hidden="true" hidden>
   <div class="menu__bar">
     <strong>{site.name}</strong>
-    <button class="menu__close" type="button" id="menu-close">
+    <button class="menu__close" type="button" id="menu-close" aria-label="Close menu">
       Close
       <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
         <path d="M1 1l14 14M15 1L1 15" fill="none" stroke="var(--color-pink)" stroke-width="1.4"></path>
@@ -66,20 +67,24 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
 </div>
 
 <script>
-  const openButton = document.getElementById('menu-open');
-  const closeButton = document.getElementById('menu-close');
-  const menu = document.getElementById('mobile-menu');
+  const openButton = document.getElementById('menu-open') as HTMLButtonElement | null;
+  const closeButton = document.getElementById('menu-close') as HTMLButtonElement | null;
+  const menu = document.getElementById('mobile-menu') as HTMLElement | null;
 
   if (openButton && closeButton && menu) {
+    let lastActiveElement: HTMLElement | null = null;
+    let savedHtmlOverflow = '';
+    let savedBodyOverflow = '';
+
     const focusables = () =>
       Array.from(
-        menu.querySelectorAll<HTMLElement>('a[href], button:not([disabled])'),
-      ).filter((el) => el.offsetParent !== null);
+        menu.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'),
+      ).filter((el) => el.offsetParent !== null || el === closeButton);
 
     const onKeydown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         event.preventDefault();
-        close();
+        close(true);
         return;
       }
       if (event.key !== 'Tab') return;
@@ -97,28 +102,68 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
     };
 
     function open() {
-      menu!.hidden = false;
-      menu!.classList.add('is-open');
-      openButton!.setAttribute('aria-expanded', 'true');
+      if (menu.classList.contains('is-open')) return;
+      lastActiveElement = (document.activeElement as HTMLElement) || openButton;
+      menu.hidden = false;
+      menu.setAttribute('aria-hidden', 'false');
+      menu.classList.add('is-open');
+      openButton.setAttribute('aria-expanded', 'true');
+
+      savedHtmlOverflow = document.documentElement.style.overflow;
+      savedBodyOverflow = document.body.style.overflow;
       document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+
       document.addEventListener('keydown', onKeydown);
-      focusables()[0]?.focus();
+      closeButton.focus();
     }
 
-    function close() {
-      menu!.classList.remove('is-open');
-      menu!.hidden = true;
-      openButton!.setAttribute('aria-expanded', 'false');
-      document.documentElement.style.overflow = '';
+    function close(restoreFocus = true) {
+      if (!menu.classList.contains('is-open') && menu.hidden) return;
+      menu.classList.remove('is-open');
+      menu.hidden = true;
+      menu.setAttribute('aria-hidden', 'true');
+      openButton.setAttribute('aria-expanded', 'false');
+
+      document.documentElement.style.overflow = savedHtmlOverflow;
+      document.body.style.overflow = savedBodyOverflow;
+
       document.removeEventListener('keydown', onKeydown);
-      openButton!.focus();
+
+      if (restoreFocus && lastActiveElement && typeof lastActiveElement.focus === 'function') {
+        lastActiveElement.focus();
+      } else if (restoreFocus && openButton) {
+        openButton.focus();
+      }
     }
 
     openButton.addEventListener('click', open);
-    closeButton.addEventListener('click', close);
-    // A wide viewport removes the trigger; do not leave the sheet stranded open.
+    closeButton.addEventListener('click', () => close(true));
+
+    // Link-click dismissal: any link inside the sheet navigates & dismisses
+    menu.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        close(false);
+      });
+    });
+
+    // Backdrop click: dismiss if user clicks the modal container itself
+    menu.addEventListener('click', (event) => {
+      if (event.target === menu) {
+        close(true);
+      }
+    });
+
+    // Viewport resize cleanup: if window widens to desktop, close menu
     window.matchMedia('(min-width: 768px)').addEventListener('change', (event) => {
-      if (event.matches && !menu.hidden) close();
+      if (event.matches && !menu.hidden) close(false);
+    });
+
+    // BFCache / pageshow cleanup
+    window.addEventListener('pageshow', (event) => {
+      if (event.persisted || menu.classList.contains('is-open')) {
+        close(false);
+      }
     });
   }
 </script>

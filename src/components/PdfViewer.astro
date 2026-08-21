@@ -106,7 +106,7 @@ const railPages = Array.from({ length: pdf ? Math.min(pdf.pages, 5) : 5 }, (_, i
       <div class="viewer__mobile">
         <div class="viewer__mobile-pager">
           <button type="button" data-page-prev disabled aria-label="Previous page">‹</button>
-          <span class="count" data-page-count>1 / {pdf.pages}</span>
+          <span class="count" data-page-count aria-live="polite">1 / {pdf.pages}</span>
           <button type="button" data-page-next disabled aria-label="Next page">›</button>
         </div>
         <label class="visually-hidden" for={`scrub-${pdf.name}`}>Jump to page</label>
@@ -202,6 +202,8 @@ const railPages = Array.from({ length: pdf ? Math.min(pdf.pages, 5) : 5 }, (_, i
     const overlayBar = root.querySelector<HTMLElement>('[data-overlay-bar]');
     const overlayTitle = root.querySelector<HTMLElement>('[data-overlay-title]');
     const zoomValue = root.querySelector<HTMLElement>('[data-zoom-value]');
+    const zoomIn = root.querySelector<HTMLButtonElement>('[data-zoom-in]');
+    const zoomOut = root.querySelector<HTMLButtonElement>('[data-zoom-out]');
     const rail = root.querySelector<HTMLElement>('[data-rail]');
 
     let doc: Awaited<ReturnType<PdfJs['getDocument']>['promise']> | null = null;
@@ -209,9 +211,66 @@ const railPages = Array.from({ length: pdf ? Math.min(pdf.pages, 5) : 5 }, (_, i
     let total = totalFromServer;
     let zoom = 1;
     let renderToken = 0;
+    let activeRender: { cancel(): void } | null = null;
 
     const canvas = document.createElement('canvas');
     pageBox.append(canvas);
+
+    // Progressive enhancement: the rail ships as decorative plates (aria-hidden)
+    // so the no-JS page is unchanged; once the reader boots the plates become
+    // real buttons. The global button reset keeps their appearance identical.
+    function upgradeRail() {
+      if (!rail) return;
+      rail.removeAttribute('aria-hidden');
+      rail.setAttribute('role', 'group');
+      rail.setAttribute('aria-label', 'Page thumbnails');
+      Array.from(rail.querySelectorAll<HTMLElement>('[data-thumb]')).forEach((thumb) => {
+        const n = Number(thumb.dataset.thumb);
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = thumb.className;
+        button.dataset.thumb = String(n);
+        button.setAttribute('aria-label', `Go to page ${n}`);
+        button.setAttribute('aria-current', n === current ? 'true' : 'false');
+        button.replaceChildren(...Array.from(thumb.childNodes));
+        thumb.replaceWith(button);
+        button.addEventListener('click', () => go(n));
+      });
+    }
+
+    // The stage is the keyboard home for paging; keys are ignored when focus
+    // sits on any interactive control so nothing is ever stolen from it.
+    stage.tabIndex = 0;
+    stage.setAttribute('role', 'region');
+    stage.setAttribute('aria-label', 'Report pages. Use the arrow keys, Page Up and Page Down, or Home and End to change pages.');
+    root.addEventListener('keydown', (event) => {
+      if (event.altKey || event.ctrlKey || event.metaKey) return;
+      const target = event.target as HTMLElement | null;
+      if (target?.closest('input, textarea, select, button, a, [contenteditable="true"], [role="slider"]')) return;
+      let to: number;
+      switch (event.key) {
+        case 'ArrowLeft':
+        case 'PageUp':
+          to = current - 1;
+          break;
+        case 'ArrowRight':
+        case 'PageDown':
+          to = current + 1;
+          break;
+        case 'Home':
+          to = 1;
+          break;
+        case 'End':
+          to = total;
+          break;
+        default:
+          return;
+      }
+      event.preventDefault();
+      go(to);
+    });
+
+    upgradeRail();
 
     function setStatus() {
       counts.forEach((el) => (el.textContent = `${current} / ${total}`));
@@ -225,6 +284,8 @@ const railPages = Array.from({ length: pdf ? Math.min(pdf.pages, 5) : 5 }, (_, i
         status.textContent = `Page ${current} of ${total} · ${zoom === 1 ? 'fit width' : `${Math.round(zoom * 100)}%`}`;
       }
       if (zoomValue) zoomValue.textContent = `${Math.round(zoom * 100)}%`;
+      if (zoomOut) zoomOut.disabled = zoom <= 0.5;
+      if (zoomIn) zoomIn.disabled = zoom >= 2.5;
       rail?.querySelectorAll<HTMLElement>('[data-thumb]').forEach((thumb) => {
         thumb.setAttribute('aria-current', Number(thumb.dataset.thumb) === current ? 'true' : 'false');
       });
@@ -232,6 +293,7 @@ const railPages = Array.from({ length: pdf ? Math.min(pdf.pages, 5) : 5 }, (_, i
 
     async function render(pageNumber: number) {
       if (!doc) return;
+      activeRender?.cancel();
       const token = ++renderToken;
       const page = await doc.getPage(pageNumber);
       if (token !== renderToken) return;
@@ -244,7 +306,13 @@ const railPages = Array.from({ length: pdf ? Math.min(pdf.pages, 5) : 5 }, (_, i
       canvas.width = Math.floor(viewport.width);
       canvas.height = Math.floor(viewport.height);
       canvas.style.width = `${Math.floor(viewport.width / Math.min(window.devicePixelRatio || 1, 2))}px`;
-      await page.render({ canvas, canvasContext: context, viewport }).promise;
+      const task = page.render({ canvas, canvasContext: context, viewport });
+      activeRender = task;
+      try {
+        await task.promise;
+      } catch {
+        return;
+      }
       pageBox!.hidden = false;
       if (overlay) overlay.hidden = true;
       setStatus();
@@ -270,6 +338,7 @@ const railPages = Array.from({ length: pdf ? Math.min(pdf.pages, 5) : 5 }, (_, i
     }
 
     function go(to: number) {
+      if (total < 1) return;
       const next = Math.min(Math.max(1, to), total);
       if (next === current) return;
       current = next;
@@ -282,24 +351,38 @@ const railPages = Array.from({ length: pdf ? Math.min(pdf.pages, 5) : 5 }, (_, i
     scrub?.addEventListener('input', () => go(Number(scrub.value)));
     root.querySelector('[data-zoom-in]')?.addEventListener('click', () => {
       zoom = Math.min(2.5, zoom + 0.25);
+      setStatus();
       void render(current);
     });
     root.querySelector('[data-zoom-out]')?.addEventListener('click', () => {
       zoom = Math.max(0.5, zoom - 0.25);
+      setStatus();
       void render(current);
     });
 
-    // Horizontal swipe turns pages on touch.
+    // Horizontal swipe turns pages on touch — but only at fit width: while
+    // zoomed the gesture pans the page instead, and vertical drags scroll.
     let startX = 0;
     let startY = 0;
     let touches = 0;
+    let panning = false;
     stage.addEventListener('touchstart', (event) => {
       touches = event.touches.length;
       startX = event.touches[0].clientX;
       startY = event.touches[0].clientY;
+      panning = false;
+    }, { passive: true });
+    stage.addEventListener('touchmove', (event) => {
+      if (event.touches.length !== 1) {
+        panning = true;
+        return;
+      }
+      const dx = Math.abs(event.touches[0].clientX - startX);
+      const dy = Math.abs(event.touches[0].clientY - startY);
+      if (dy > dx && dy > 24) panning = true;
     }, { passive: true });
     stage.addEventListener('touchend', (event) => {
-      if (touches !== 1) return;
+      if (touches !== 1 || panning || zoom !== 1) return;
       const touch = event.changedTouches[0];
       const dx = touch.clientX - startX;
       const dy = touch.clientY - startY;
