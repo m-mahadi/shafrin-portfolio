@@ -1,11 +1,14 @@
 ---
 import { nav, menuNav, site } from '../lib/site';
+import { allProjects, href as projectHref, isBengali } from '../lib/projects';
 
 interface Props {
   path: string;
 }
 const { path } = Astro.props;
 const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+
+const projects = await allProjects();
 ---
 
 <header class="site-header">
@@ -19,7 +22,26 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
 
       <nav class="nav__links" aria-label="Primary">
         {nav.map((item) => (
-          <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a>
+          item.href === '/portfolio' ? (
+            <span class="nav__dd">
+              <a href="/portfolio" aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a>
+              <div class="nav__dd-panel">
+                <a class="nav__dd-all" href="/portfolio">View all projects</a>
+                {projects.map((p) => (
+                  <a
+                    class:list={['nav__dd-item', isBengali(p.data.title) && 'bn']}
+                    href={projectHref(p)}
+                    aria-current={path === projectHref(p) ? 'page' : undefined}
+                  >
+                    <span class="nav__dd-num" aria-hidden="true">{p.data.number}</span>
+                    {p.data.title}
+                  </a>
+                ))}
+              </div>
+            </span>
+          ) : (
+            <a href={item.href} aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a>
+          )
         ))}
       </nav>
 
@@ -167,3 +189,96 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
     });
   }
 </script>
+
+<style>
+  /* Portfolio dropdown: hovering or focusing the Portfolio item reveals the
+     full project index as a compact two-column plate; the label itself still
+     links to /portfolio. */
+  /* The panel is anchored to the nav's right edge so it stays inside the
+     content column at any desktop width. */
+  .nav { position: relative; }
+  .nav__dd { position: static; display: inline-flex; }
+  .nav__dd-panel {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: auto;
+    margin-top: 14px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 34px;
+    width: min(588px, 92vw);
+    padding: 20px 26px 22px;
+    background: var(--color-paper);
+    border: 1px solid var(--color-ink);
+    box-shadow: 10px 10px 0 var(--color-pink-wash);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(5px);
+    transition: opacity 0.16s ease, transform 0.16s ease;
+    z-index: 60;
+  }
+  /* Invisible bridge across the gap so moving from the label to the panel
+     never drops the hover and the menu can actually be clicked. */
+  .nav__dd-panel::before {
+    content: '';
+    position: absolute;
+    top: -16px;
+    left: 0;
+    right: 0;
+    height: 16px;
+  }
+  .nav__dd:hover .nav__dd-panel,
+  .nav__dd:focus-within .nav__dd-panel {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+  .nav__dd-all {
+    grid-column: 1 / -1;
+    margin-bottom: 12px;
+    padding: 0 0 12px !important;
+    border-bottom: 1px solid var(--color-rule);
+    font-family: var(--font-mono), monospace !important;
+    font-size: 11px !important;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--color-oxblood) !important;
+  }
+  .nav__dd-panel a {
+    display: flex;
+    align-items: baseline;
+    gap: 13px;
+    padding: 7px 0;
+    font-family: var(--font-display), Georgia, serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--color-ink);
+    border-bottom: 0;
+    transition: color 0.14s ease;
+  }
+  .nav__dd-item { border-top: 1px solid var(--color-rule); }
+  .nav__dd-panel a:hover,
+  .nav__dd-panel a:focus-visible { color: var(--color-pink); }
+  .nav__dd-num {
+    flex-shrink: 0;
+    width: 20px;
+    font-family: var(--font-mono), monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--color-pink);
+  }
+  .nav__dd-item.bn {
+    font-family: var(--font-bangla), var(--font-display), serif;
+    font-size: 14px;
+    line-height: 20px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .nav__dd-panel { transition: none; transform: translateY(0); }
+  }
+</style>

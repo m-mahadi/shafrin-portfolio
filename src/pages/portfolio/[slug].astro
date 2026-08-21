@@ -96,23 +96,6 @@ const bengaliTitle = d.titleBn && isBengali(d.titleBn);
         <h2 class="kicker">Justification</h2>
         <p>{d.justification}</p>
       </section>
-
-      <section class="prose__block">
-        <h2 class="kicker">Outcomes</h2>
-        <div>
-          <p>{d.outcomesLead}</p>
-          {d.outcomes.length > 0 && (
-            <ol class="outcomes">
-              {d.outcomes.map((outcome, i) => (
-                <li>
-                  <span class="n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-                  <span class="b">{outcome}</span>
-                </li>
-              ))}
-            </ol>
-          )}
-        </div>
-      </section>
     </div>
   </div>
 
@@ -136,6 +119,27 @@ const bengaliTitle = d.titleBn && isBengali(d.titleBn);
       />
     </div>
   </section>
+
+  <div class="wrap">
+    <div class="prose prose--after-report">
+      <section class="prose__block">
+        <h2 class="kicker">Outcomes</h2>
+        <div>
+          <p>{d.outcomesLead}</p>
+          {d.outcomes.length > 0 && (
+            <ol class="outcomes">
+              {d.outcomes.map((outcome, i) => (
+                <li>
+                  <span class="n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                  <span class="b">{outcome}</span>
+                </li>
+              ))}
+            </ol>
+          )}
+        </div>
+      </section>
+    </div>
+  </div>
 
   <nav class="wrap project-nav" aria-label="Other projects">
     {previous ? (

@@ -3,6 +3,8 @@
 // Desktop chrome is artboard 06; mobile chrome is artboard 07.
 // Page counts are rendered server-side so the chrome is right before JS boots,
 // and the whole thing degrades to a plain download link with no JS at all.
+// The reader renders every page stacked in one continuously scrolling stage;
+// the pager, thumbnails and keyboard jump between pages within that scroll.
 import type { PdfInfo } from '../lib/pdf';
 
 interface Props {
@@ -80,7 +82,7 @@ const railPages = Array.from({ length: pdf ? Math.min(pdf.pages, 5) : 5 }, (_, i
 
       <div class="viewer__stage" data-stage>
         {pdf ? (
-          <div class="viewer__page" data-page hidden></div>
+          <div class="viewer__pages" data-pages hidden></div>
         ) : (
           <div class="viewer__slot">
             <svg width="26" height="32" viewBox="0 0 15 19" aria-hidden="true" focusable="false">
@@ -147,24 +149,23 @@ const railPages = Array.from({ length: pdf ? Math.min(pdf.pages, 5) : 5 }, (_, i
 
 {pdf && (
   <p class="viewer__hint">
-    Pinch to zoom, swipe sideways to turn pages. If the embedded viewer is blocked, the two
+    Scroll to read the whole report. Pinch to zoom. If the embedded viewer is blocked, the two
     buttons still work.
   </p>
 )}
+
+<style>
+  /* Continuous scroll: every page stacks in the stage and the stage scrolls. */
+  .viewer__pages { display: flex; flex-direction: column; align-items: center; gap: 22px; width: 100%; }
+  .viewer__pages[hidden] { display: none; }
+  .viewer__pages .viewer__page { width: auto; max-width: 100%; }
+</style>
 
 <script>
   // pdf.js is only fetched when a document is actually attached, so pages that
   // are still showing the empty PDF slot cost nothing.
   type PdfJs = typeof import('pdfjs-dist/build/pdf.mjs');
   let pdfjs: PdfJs;
-
-  function setup(root: HTMLElement) {
-    const src = root.dataset.pdf;
-    const stage = root.querySelector<HTMLElement>('[data-stage]');
-    const pageBox = root.querySelector<HTMLElement>('[data-page]');
-    const overlay = root.querySelector<HTMLElement>('[data-overlay]');
-    return { src, stage, pageBox, overlay };
-  }
 
   function showError(root: HTMLElement) {
     const overlay = root.querySelector<HTMLElement>('[data-overlay]');
@@ -188,9 +189,13 @@ const railPages = Array.from({ length: pdf ? Math.min(pdf.pages, 5) : 5 }, (_, i
   }
 
   async function boot(root: HTMLElement) {
-    const { src, stage, pageBox, overlay } = setup(root);
-    if (!src || !stage || !pageBox) return;
+    const src = root.dataset.pdf;
+    const stage = root.querySelector<HTMLElement>('[data-stage]');
+    const pagesBox = root.querySelector<HTMLElement>('[data-pages]');
+    const overlay = root.querySelector<HTMLElement>('[data-overlay]');
+    if (!src || !stage || !pagesBox) return;
 
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const totalFromServer = Number(root.dataset.pages ?? 0);
     const counts = Array.from(root.querySelectorAll<HTMLElement>('[data-page-count]'));
     const prevButtons = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-page-prev]'));
@@ -210,15 +215,14 @@ const railPages = Array.from({ length: pdf ? Math.min(pdf.pages, 5) : 5 }, (_, i
     let current = 1;
     let total = totalFromServer;
     let zoom = 1;
-    let renderToken = 0;
-    let activeRender: { cancel(): void } | null = null;
+    let renderSeq = 0;
 
-    const canvas = document.createElement('canvas');
-    pageBox.append(canvas);
+    type Entry = { n: number; el: HTMLElement; canvas: HTMLCanvasElement };
+    const pages: Entry[] = [];
 
     // Progressive enhancement: the rail ships as decorative plates (aria-hidden)
     // so the no-JS page is unchanged; once the reader boots the plates become
-    // real buttons. The global button reset keeps their appearance identical.
+    // real buttons that scroll to their page.
     function upgradeRail() {
       if (!rail) return;
       rail.removeAttribute('aria-hidden');
@@ -242,7 +246,7 @@ const railPages = Array.from({ length: pdf ? Math.min(pdf.pages, 5) : 5 }, (_, i
     // sits on any interactive control so nothing is ever stolen from it.
     stage.tabIndex = 0;
     stage.setAttribute('role', 'region');
-    stage.setAttribute('aria-label', 'Report pages. Use the arrow keys, Page Up and Page Down, or Home and End to change pages.');
+    stage.setAttribute('aria-label', 'Report pages. Scroll to read; use the arrow keys, Page Up and Page Down, or Home and End to jump between pages.');
     root.addEventListener('keydown', (event) => {
       if (event.altKey || event.ctrlKey || event.metaKey) return;
       const target = event.target as HTMLElement | null;
@@ -250,10 +254,12 @@ const railPages = Array.from({ length: pdf ? Math.min(pdf.pages, 5) : 5 }, (_, i
       let to: number;
       switch (event.key) {
         case 'ArrowLeft':
+        case 'ArrowUp':
         case 'PageUp':
           to = current - 1;
           break;
         case 'ArrowRight':
+        case 'ArrowDown':
         case 'PageDown':
           to = current + 1;
           break;
@@ -291,32 +297,120 @@ const railPages = Array.from({ length: pdf ? Math.min(pdf.pages, 5) : 5 }, (_, i
       });
     }
 
-    async function render(pageNumber: number) {
-      if (!doc) return;
-      activeRender?.cancel();
-      const token = ++renderToken;
-      const page = await doc.getPage(pageNumber);
-      if (token !== renderToken) return;
-      const base = page.getViewport({ scale: 1 });
-      const available = Math.max(240, stage!.clientWidth - 48);
-      const scale = (available / base.width) * zoom * Math.min(window.devicePixelRatio || 1, 2);
-      const viewport = page.getViewport({ scale });
-      const context = canvas.getContext('2d');
-      if (!context) return;
-      canvas.width = Math.floor(viewport.width);
-      canvas.height = Math.floor(viewport.height);
-      canvas.style.width = `${Math.floor(viewport.width / Math.min(window.devicePixelRatio || 1, 2))}px`;
-      const task = page.render({ canvas, canvasContext: context, viewport });
-      activeRender = task;
-      try {
-        await task.promise;
-      } catch {
-        return;
-      }
-      pageBox!.hidden = false;
-      if (overlay) overlay.hidden = true;
+    function setCurrent(n: number) {
+      const clamped = Math.min(Math.max(1, n), total);
+      if (clamped === current) return;
+      current = clamped;
       setStatus();
     }
+
+    // Which page sits closest to the middle of the visible stage.
+    function activeFromScroll() {
+      const stageRect = stage!.getBoundingClientRect();
+      const mid = stageRect.top + stage!.clientHeight / 2;
+      let best = current;
+      let bestDist = Infinity;
+      for (const e of pages) {
+        const r = e.el.getBoundingClientRect();
+        const center = r.top + r.height / 2;
+        const d = Math.abs(center - mid);
+        if (d < bestDist) {
+          bestDist = d;
+          best = e.n;
+        }
+      }
+      return best;
+    }
+
+    function go(to: number) {
+      const n = Math.min(Math.max(1, to), total);
+      const entry = pages.find((e) => e.n === n);
+      if (!entry) {
+        setCurrent(n);
+        return;
+      }
+      const stageRect = stage!.getBoundingClientRect();
+      const elRect = entry.el.getBoundingClientRect();
+      const delta = elRect.top - stageRect.top - 24;
+      stage!.scrollBy({ top: delta, behavior: prefersReduced ? 'auto' : 'smooth' });
+      setCurrent(n);
+    }
+
+    async function renderPage(entry: Entry) {
+      if (!doc) return;
+      const page = await doc.getPage(entry.n);
+      const base = page.getViewport({ scale: 1 });
+      const available = Math.max(240, stage!.clientWidth - 48);
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const scale = (available / base.width) * zoom * dpr;
+      const viewport = page.getViewport({ scale });
+      const context = entry.canvas.getContext('2d');
+      if (!context) return;
+      entry.canvas.width = Math.floor(viewport.width);
+      entry.canvas.height = Math.floor(viewport.height);
+      entry.canvas.style.width = `${Math.floor(viewport.width / dpr)}px`;
+      await page.render({ canvas: entry.canvas, canvasContext: context, viewport }).promise;
+    }
+
+    // A fresh render pass supersedes any in-flight one via the sequence guard,
+    // which also prevents two passes rendering the same canvas at once. The
+    // loading overlay lifts as soon as the first page has painted.
+    async function renderAll() {
+      const seq = ++renderSeq;
+      for (let i = 0; i < pages.length; i++) {
+        if (seq !== renderSeq) return;
+        try {
+          await renderPage(pages[i]);
+        } catch {
+          /* a stale or cancelled render is fine */
+        }
+      }
+    }
+
+    function buildSkeleton() {
+      for (let n = 1; n <= total; n++) {
+        const el = document.createElement('div');
+        el.className = 'viewer__page';
+        el.dataset.pageIndex = String(n);
+        const canvas = document.createElement('canvas');
+        el.append(canvas);
+        pagesBox!.append(el);
+        pages.push({ n, el, canvas });
+      }
+    }
+
+    prevButtons.forEach((b) => b.addEventListener('click', () => go(current - 1)));
+    nextButtons.forEach((b) => b.addEventListener('click', () => go(current + 1)));
+    scrub?.addEventListener('input', () => go(Number(scrub.value)));
+
+    async function setZoom(next: number) {
+      const anchor = current;
+      zoom = Math.min(2.5, Math.max(0.5, next));
+      setStatus();
+      await renderAll();
+      go(anchor);
+    }
+    zoomIn?.addEventListener('click', () => void setZoom(zoom + 0.25));
+    zoomOut?.addEventListener('click', () => void setZoom(zoom - 0.25));
+
+    let scrollTimer: number | undefined;
+    stage.addEventListener(
+      'scroll',
+      () => {
+        window.clearTimeout(scrollTimer);
+        scrollTimer = window.setTimeout(() => setCurrent(activeFromScroll()), 80);
+      },
+      { passive: true },
+    );
+
+    let resizeTimer: number | undefined;
+    window.addEventListener('resize', () => {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        const anchor = current;
+        void renderAll().then(() => go(anchor));
+      }, 150);
+    });
 
     async function renderThumbs() {
       if (!doc || !rail) return;
@@ -337,64 +431,6 @@ const railPages = Array.from({ length: pdf ? Math.min(pdf.pages, 5) : 5 }, (_, i
       }
     }
 
-    function go(to: number) {
-      if (total < 1) return;
-      const next = Math.min(Math.max(1, to), total);
-      if (next === current) return;
-      current = next;
-      setStatus();
-      void render(current);
-    }
-
-    prevButtons.forEach((b) => b.addEventListener('click', () => go(current - 1)));
-    nextButtons.forEach((b) => b.addEventListener('click', () => go(current + 1)));
-    scrub?.addEventListener('input', () => go(Number(scrub.value)));
-    root.querySelector('[data-zoom-in]')?.addEventListener('click', () => {
-      zoom = Math.min(2.5, zoom + 0.25);
-      setStatus();
-      void render(current);
-    });
-    root.querySelector('[data-zoom-out]')?.addEventListener('click', () => {
-      zoom = Math.max(0.5, zoom - 0.25);
-      setStatus();
-      void render(current);
-    });
-
-    // Horizontal swipe turns pages on touch — but only at fit width: while
-    // zoomed the gesture pans the page instead, and vertical drags scroll.
-    let startX = 0;
-    let startY = 0;
-    let touches = 0;
-    let panning = false;
-    stage.addEventListener('touchstart', (event) => {
-      touches = event.touches.length;
-      startX = event.touches[0].clientX;
-      startY = event.touches[0].clientY;
-      panning = false;
-    }, { passive: true });
-    stage.addEventListener('touchmove', (event) => {
-      if (event.touches.length !== 1) {
-        panning = true;
-        return;
-      }
-      const dx = Math.abs(event.touches[0].clientX - startX);
-      const dy = Math.abs(event.touches[0].clientY - startY);
-      if (dy > dx && dy > 24) panning = true;
-    }, { passive: true });
-    stage.addEventListener('touchend', (event) => {
-      if (touches !== 1 || panning || zoom !== 1) return;
-      const touch = event.changedTouches[0];
-      const dx = touch.clientX - startX;
-      const dy = touch.clientY - startY;
-      if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) go(current + (dx < 0 ? 1 : -1));
-    }, { passive: true });
-
-    let resizeTimer: number | undefined;
-    window.addEventListener('resize', () => {
-      window.clearTimeout(resizeTimer);
-      resizeTimer = window.setTimeout(() => void render(current), 150);
-    });
-
     try {
       const task = pdfjs.getDocument({ url: src });
       task.onProgress = ({ loaded, total: bytes }: { loaded: number; total: number }) => {
@@ -405,8 +441,13 @@ const railPages = Array.from({ length: pdf ? Math.min(pdf.pages, 5) : 5 }, (_, i
       };
       doc = await task.promise;
       total = doc.numPages;
+      buildSkeleton();
+      // Reveal the page stack and lift the loading overlay once the document is
+      // ready; pages then paint in progressively as they render.
+      pagesBox.hidden = false;
+      if (overlay) overlay.hidden = true;
       setStatus();
-      await render(1);
+      await renderAll();
       void renderThumbs();
     } catch {
       showError(root);

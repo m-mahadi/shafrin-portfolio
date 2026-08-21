@@ -3,7 +3,11 @@
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Frame from '../components/Frame.astro';
+import PdfViewer from '../components/PdfViewer.astro';
+import { inspectPdf } from '../lib/pdf';
 import portraitOrange from '../assets/images/portrait-orange.jpg';
+
+const resume = await inspectPdf('shafrin-akter-chowdhury-resume.pdf');
 
 const objectives = [
   'Demonstrate the knowledge and skills I have acquired.',
@@ -115,5 +119,26 @@ const subjects = [
     <ul class="subjects">
       {subjects.map((subject) => <li>{subject}</li>)}
     </ul>
+  </section>
+
+  <section class="report-band report-band--internship" aria-labelledby="resume">
+    <div class="wrap">
+      <div class="rule-head">
+        <div class="rule-head__left">
+          <h2 class="kicker kicker--oxblood" id="resume">§ Résumé</h2>
+          <p class="section-note">The short version.</p>
+        </div>
+        <p class="report-band__meta">
+          {resume ? `${resume.pages} page · ${resume.size} · PDF` : '— PDF to be attached'}
+        </p>
+      </div>
+
+      <PdfViewer
+        pdf={resume}
+        fallbackName="shafrin-akter-chowdhury-resume.pdf"
+        slotNote="The résumé renders here once the file is supplied."
+        label="Résumé"
+      />
+    </div>
   </section>
 </Base>

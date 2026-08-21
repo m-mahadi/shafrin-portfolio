@@ -168,3 +168,19 @@ const columns = [rest.slice(0, 6), rest.slice(6)];
     </div>
   </section>
 </Base>
+
+<style>
+  /* Home hero fits one screen: fill the viewport below the header and pull the
+     facts/CTA up so the bottom of the hero is visible without scrolling. */
+  @media (min-width: 768px) {
+    .hero {
+      min-height: calc(100svh - 92px);
+      padding-top: 36px;
+      padding-bottom: 48px;
+      align-items: center;
+    }
+    .hero__headline { padding-top: 18px; }
+    .hero__lead { padding-top: 26px; }
+    .hero__facts { padding-top: 38px; }
+  }
+</style>
