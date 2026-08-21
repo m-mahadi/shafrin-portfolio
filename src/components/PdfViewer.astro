@@ -217,7 +217,11 @@ const railPages = Array.from({ length: pdf ? Math.min(pdf.pages, 5) : 5 }, (_, i
     let zoom = 1;
     let renderSeq = 0;
 
-    type Entry = { n: number; el: HTMLElement; canvas: HTMLCanvasElement };
+    type RenderTask = { cancel(): void; promise: Promise<void> };
+    type Entry = { n: number; el: HTMLElement; canvas: HTMLCanvasElement; task?: RenderTask };
+    // ponytail: every page is rendered and kept. Fine for these short reports
+    // (≤ ~15 pages). If a long document ever ships here, virtualize to the
+    // pages near the viewport instead of holding every canvas.
     const pages: Entry[] = [];
 
     // Progressive enhancement: the rail ships as decorative plates (aria-hidden)
@@ -323,12 +327,10 @@ const railPages = Array.from({ length: pdf ? Math.min(pdf.pages, 5) : 5 }, (_, i
     }
 
     function go(to: number) {
+      if (!pages.length) return; // ignore paging until the stack is built
       const n = Math.min(Math.max(1, to), total);
       const entry = pages.find((e) => e.n === n);
-      if (!entry) {
-        setCurrent(n);
-        return;
-      }
+      if (!entry) return;
       const stageRect = stage!.getBoundingClientRect();
       const elRect = entry.el.getBoundingClientRect();
       const delta = elRect.top - stageRect.top - 24;
@@ -338,6 +340,9 @@ const railPages = Array.from({ length: pdf ? Math.min(pdf.pages, 5) : 5 }, (_, i
 
     async function renderPage(entry: Entry) {
       if (!doc) return;
+      // Cancel any in-flight render on this canvas before touching it again, so a
+      // zoom/resize during the initial pass never collides on the same canvas.
+      entry.task?.cancel();
       const page = await doc.getPage(entry.n);
       const base = page.getViewport({ scale: 1 });
       const available = Math.max(240, stage!.clientWidth - 48);
@@ -349,7 +354,9 @@ const railPages = Array.from({ length: pdf ? Math.min(pdf.pages, 5) : 5 }, (_, i
       entry.canvas.width = Math.floor(viewport.width);
       entry.canvas.height = Math.floor(viewport.height);
       entry.canvas.style.width = `${Math.floor(viewport.width / dpr)}px`;
-      await page.render({ canvas: entry.canvas, canvasContext: context, viewport }).promise;
+      const task = page.render({ canvas: entry.canvas, canvasContext: context, viewport }) as RenderTask;
+      entry.task = task;
+      await task.promise;
     }
 
     // A fresh render pass supersedes any in-flight one via the sequence guard,
@@ -373,6 +380,8 @@ const railPages = Array.from({ length: pdf ? Math.min(pdf.pages, 5) : 5 }, (_, i
         el.className = 'viewer__page';
         el.dataset.pageIndex = String(n);
         const canvas = document.createElement('canvas');
+        canvas.setAttribute('role', 'img');
+        canvas.setAttribute('aria-label', `Page ${n}`);
         el.append(canvas);
         pagesBox!.append(el);
         pages.push({ n, el, canvas });
@@ -448,7 +457,7 @@ const railPages = Array.from({ length: pdf ? Math.min(pdf.pages, 5) : 5 }, (_, i
       if (overlay) overlay.hidden = true;
       setStatus();
       await renderAll();
-      void renderThumbs();
+      void renderThumbs().catch(() => {});
     } catch {
       showError(root);
     }

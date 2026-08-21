@@ -1089,8 +1089,8 @@ input, textarea { font: inherit; color: inherit; }
   .project-head__main h1.bn { font-size: 30px; line-height: 44px; }
   .project-head__sub { padding-top: 10px; font-size: 20px; line-height: 28px; }
   .project-meta { margin-top: 26px; padding-top: 14px; }
-  .project-meta div { flex-direction: row; align-items: baseline; gap: 16px; padding-block: 11px; }
-  .project-meta dt { flex-shrink: 0; width: 86px; font-size: 10px; line-height: 12px; letter-spacing: 0.12em; }
+  .project-meta div { flex-direction: column; align-items: flex-start; gap: 4px; padding-block: 12px; }
+  .project-meta dt { width: auto; font-size: 10px; line-height: 12px; letter-spacing: 0.12em; }
   .project-meta dd { flex: 1 1 auto; font-size: 16px; line-height: 20px; }
   .project-hero { padding-top: 34px; }
   .project-hero .frame { width: calc(100% - 12px); height: 220px; }
@@ -1100,7 +1100,7 @@ input, textarea { font: inherit; color: inherit; }
   .figcaption span { font-size: 14px; line-height: 20px; }
   .plate__note { font-size: 14px; line-height: 22px; }
   .prose { padding-top: 40px; }
-  .prose__block { flex-direction: column; gap: 12px; padding-top: 22px; padding-bottom: 32px; }
+  .prose__block { flex-direction: column; gap: 14px; padding-top: 22px; padding-bottom: 36px; }
   .prose__block h2, .prose__block > div, .prose__block > p { width: 100%; }
   .prose__block h2 { font-size: 11px; }
   .prose__block > div, .prose__block > p { font-size: 17px; line-height: 29px; }
@@ -1130,8 +1130,8 @@ input, textarea { font: inherit; color: inherit; }
   .side-block__body blockquote + p { padding-top: 28px; }
   .objectives { flex-direction: column; gap: 0; padding-top: 26px; }
   .objectives .b { font-size: 17px; line-height: 27px; }
-  .subjects { width: 100%; column-gap: 10px; row-gap: 8px; }
-  .subjects li { font-size: 24px; line-height: 32px; }
+  .subjects { width: 100%; column-gap: 10px; row-gap: 12px; }
+  .subjects li { font-size: 21px; line-height: 30px; }
   .subjects li:not(:last-child)::after { margin-left: 10px; }
 
   /* Extra curricular — artboard 09 */
@@ -1142,7 +1142,10 @@ input, textarea { font: inherit; color: inherit; }
   .activity__image.frame > .frame__shadow { inset: 12px -12px -12px 12px; }
   .activity__copy { padding-top: 24px; }
   .activity__copy .eyebrow { font-size: 10px; line-height: 12px; }
-  .activity__copy h2 { padding-top: 8px; font-size: 32px; line-height: 34px; }
+  .activity__copy h2 { padding-top: 12px; font-size: 32px; line-height: 34px; }
+  .activity__copy .plate-head { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .activity__copy .plate-head .num { font-size: 30px; line-height: 30px; }
+  .activity__copy .plate-head .eyebrow { width: 100%; }
   .activity__copy p:not(.eyebrow) { padding-top: 8px; font-size: 16px; line-height: 26px; }
   .lessons { flex-direction: column; gap: 20px; padding-top: 48px; }
   .lessons__intro, .lessons__list { width: 100%; }

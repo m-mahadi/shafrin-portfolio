@@ -24,7 +24,7 @@ const projects = await allProjects();
         {nav.map((item) => (
           item.href === '/portfolio' ? (
             <span class="nav__dd">
-              <a href="/portfolio" aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a>
+              <a href="/portfolio" aria-haspopup="true" aria-current={isCurrent(item.href) ? 'page' : undefined}>{item.label}</a>
               <div class="nav__dd-panel">
                 <a class="nav__dd-all" href="/portfolio">View all projects</a>
                 {projects.map((p) => (
